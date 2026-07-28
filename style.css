@@ -664,3 +664,63 @@ nav a.active{
 }
 
 }
+
+/* ===== Newsletter ===== */
+
+.newsletter{
+    padding:90px 8%;
+    background:linear-gradient(135deg,#00c8ff,#0099cc);
+    text-align:center;
+}
+
+.newsletter-content{
+    max-width:700px;
+    margin:auto;
+}
+
+.newsletter h2{
+    color:#fff;
+    font-size:42px;
+    margin-bottom:20px;
+}
+
+.newsletter p{
+    color:#eefcff;
+    font-size:18px;
+    margin-bottom:35px;
+    line-height:1.8;
+}
+
+.newsletter-form{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.newsletter-form input{
+    width:380px;
+    max-width:100%;
+    padding:16px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+
+.newsletter-form button{
+    padding:16px 30px;
+    border:none;
+    border-radius:10px;
+    background:#111;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.newsletter-form button:hover{
+    background:#222;
+    transform:translateY(-3px);
+}
