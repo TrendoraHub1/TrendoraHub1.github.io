@@ -1,1 +1,819 @@
+/* ====================================
+   RESET
+==================================== */
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f7fb;
+    color:#222;
+    line-height:1.7;
+}
+
+img{
+    max-width:100%;
+    display:block;
+}
+
+a{
+    text-decoration:none;
+}
+
+/* ====================================
+   HEADER
+==================================== */
+
+header{
+    position:sticky;
+    top:0;
+    width:100%;
+    background:#111;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 8%;
+    z-index:1000;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.logo img{
+    height:55px;
+}
+
+nav{
+    display:flex;
+    gap:30px;
+}
+
+nav a{
+    color:#fff;
+    font-size:17px;
+    transition:.3s;
+}
+
+nav a:hover,
+nav a.active{
+    color:#00c8ff;
+}
+
+/* ====================================
+   PAGE HERO
+==================================== */
+
+.page-hero{
+
+    min-height:420px;
+
+    background-image:url("assets/images/category-gadgets.png");
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+
+}
+
+.page-hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:rgba(0,0,0,.55);
+
+}
+
+.hero-overlay{
+
+    position:relative;
+
+    z-index:2;
+
+    text-align:center;
+
+    color:#fff;
+
+    max-width:850px;
+
+    padding:20px;
+
+}
+
+.page-badge{
+
+    display:inline-block;
+
+    background:#00c8ff;
+
+    padding:10px 20px;
+
+    border-radius:50px;
+
+    font-weight:bold;
+
+    margin-bottom:20px;
+
+}
+
+.hero-overlay h1{
+
+    font-size:58px;
+
+    margin-bottom:20px;
+
+}
+
+.hero-overlay p{
+
+    font-size:20px;
+
+    color:#eee;
+
+}
+
+/* ====================================
+   BREADCRUMB
+==================================== */
+
+.breadcrumb{
+
+    background:#fff;
+
+    padding:18px 8%;
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+    font-size:15px;
+
+}
+
+.breadcrumb a{
+
+    color:#00c8ff;
+
+}
+/* ====================================
+   PRODUCTS SECTION
+==================================== */
+
+.products{
+
+    padding:80px 8%;
+
+    background:#f5f7fb;
+
+}
+
+
+.section-title{
+
+    text-align:center;
+
+    max-width:800px;
+
+    margin:auto;
+
+    margin-bottom:50px;
+
+}
+
+
+.section-title h2{
+
+    font-size:42px;
+
+    color:#222;
+
+    margin-bottom:15px;
+
+}
+
+
+.section-title p{
+
+    color:#666;
+
+    font-size:18px;
+
+}
+
+
+/* ====================================
+   PRODUCT GRID
+==================================== */
+
+
+.product-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:35px;
+
+}
+
+
+/* ====================================
+   PRODUCT CARD
+==================================== */
+
+
+.product-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.10);
+
+    transition:.35s ease;
+
+}
+
+
+.product-card:hover{
+
+    transform:translateY(-12px);
+
+    box-shadow:0 25px 60px rgba(0,0,0,.18);
+
+}
+
+
+.product-card img{
+
+    width:100%;
+
+    height:300px;
+
+    object-fit:cover;
+
+    transition:.4s ease;
+
+}
+
+
+.product-card:hover img{
+
+    transform:scale(1.05);
+
+}
+
+
+.product-card h3{
+
+    font-size:24px;
+
+    margin:20px 20px 10px;
+
+    color:#222;
+
+}
+
+
+.product-card p{
+
+    font-size:16px;
+
+    color:#666;
+
+    margin:0 20px 25px;
+
+    line-height:1.7;
+
+}
+
+
+/* ====================================
+   PRODUCT BUTTON
+==================================== */
+
+
+.buy-btn{
+
+    display:inline-block;
+
+    margin:0 20px 25px;
+
+    background:#111;
+
+    color:#fff;
+
+    padding:14px 35px;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    transition:.3s ease;
+
+}
+
+
+.buy-btn:hover{
+
+    background:#00c8ff;
+
+    transform:translateY(-3px);
+
+}
+
+
+/* ====================================
+   LOAD MORE BUTTON
+==================================== */
+
+
+.load-more{
+
+    text-align:center;
+
+    padding:40px 20px;
+
+}
+
+
+.load-btn{
+
+    background:#00c8ff;
+
+    color:#fff;
+
+    border:none;
+
+    padding:16px 45px;
+
+    border-radius:12px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+
+}
+
+
+.load-btn:hover{
+
+    background:#0099cc;
+
+    transform:translateY(-3px);
+
+}
+/* ====================================
+   NEWSLETTER SECTION
+==================================== */
+
+.newsletter{
+
+    padding:90px 8%;
+
+    background:linear-gradient(
+        135deg,
+        #00c8ff,
+        #0099cc
+    );
+
+    text-align:center;
+
+}
+
+
+.newsletter-content{
+
+    max-width:750px;
+
+    margin:auto;
+
+}
+
+
+.newsletter h2{
+
+    color:#fff;
+
+    font-size:42px;
+
+    margin-bottom:20px;
+
+}
+
+
+.newsletter p{
+
+    color:#eefcff;
+
+    font-size:18px;
+
+    margin-bottom:35px;
+
+}
+
+
+.newsletter-form{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+}
+
+
+.newsletter-form input{
+
+    width:380px;
+
+    max-width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+}
+
+
+.newsletter-form button{
+
+    padding:16px 35px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#111;
+
+    color:#fff;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+.newsletter-form button:hover{
+
+    transform:translateY(-3px);
+
+    background:#222;
+
+}
+
+
+/* ====================================
+   FOOTER
+==================================== */
+
+
+footer{
+
+    background:#111;
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:35px 20px;
+
+}
+
+
+footer p{
+
+    color:#ddd;
+
+    font-size:16px;
+
+}
+
+
+/* ====================================
+   SCROLLBAR
+==================================== */
+
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+
+::-webkit-scrollbar-track{
+
+    background:#eee;
+
+}
+
+
+::-webkit-scrollbar-thumb{
+
+    background:#00c8ff;
+
+    border-radius:50px;
+
+}
+
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#0099cc;
+
+}
+
+
+/* ====================================
+   ANIMATIONS
+==================================== */
+
+
+.product-card,
+.page-hero,
+.newsletter{
+
+    animation:fadeUp .8s ease;
+
+}
+
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/* ====================================
+   RESPONSIVE DESIGN
+==================================== */
+
+
+/* Tablet */
+
+@media(max-width:992px){
+
+    header{
+
+        flex-direction:column;
+
+        gap:15px;
+
+        padding:20px;
+
+    }
+
+
+    nav{
+
+        flex-wrap:wrap;
+
+        justify-content:center;
+
+        gap:18px;
+
+    }
+
+
+    .hero-overlay h1{
+
+        font-size:45px;
+
+    }
+
+
+    .hero-overlay p{
+
+        font-size:18px;
+
+    }
+
+
+    .product-grid{
+
+        grid-template-columns:repeat(
+            auto-fit,
+            minmax(260px,1fr)
+        );
+
+    }
+
+}
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+
+    .page-hero{
+
+        min-height:350px;
+
+    }
+
+
+    .hero-overlay h1{
+
+        font-size:36px;
+
+    }
+
+
+    .hero-overlay p{
+
+        font-size:16px;
+
+    }
+
+
+    .section-title h2{
+
+        font-size:32px;
+
+    }
+
+
+    .products{
+
+        padding:60px 20px;
+
+    }
+
+
+    .product-card img{
+
+        height:250px;
+
+    }
+
+
+    .newsletter{
+
+        padding:70px 20px;
+
+    }
+
+
+    .newsletter h2{
+
+        font-size:32px;
+
+    }
+
+
+    .newsletter-form{
+
+        flex-direction:column;
+
+        align-items:center;
+
+    }
+
+
+    .newsletter-form button{
+
+        width:100%;
+
+        max-width:380px;
+
+    }
+
+
+}
+
+
+/* Small Mobile */
+
+@media(max-width:480px){
+
+
+    nav a{
+
+        font-size:14px;
+
+    }
+
+
+    .hero-overlay h1{
+
+        font-size:30px;
+
+    }
+
+
+    .hero-overlay p{
+
+        font-size:15px;
+
+    }
+
+
+    .buy-btn{
+
+        width:calc(100% - 40px);
+
+        text-align:center;
+
+    }
+
+
+    .section-title h2{
+
+        font-size:28px;
+
+    }
+
+
+}
+
+
+/* ====================================
+   PREMIUM EFFECTS
+==================================== */
+
+
+.product-card{
+
+    cursor:pointer;
+
+}
+
+
+.buy-btn{
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+}
+
+
+.buy-btn:hover{
+
+    box-shadow:0 15px 35px rgba(0,200,255,.35);
+
+}
+
+
+.page-hero{
+
+    background-attachment:fixed;
+
+}
+
+
+/* Smooth Loading */
+
+body{
+
+    overflow-x:hidden;
+
+}
