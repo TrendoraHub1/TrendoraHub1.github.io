@@ -320,3 +320,22 @@ hr{
     box-shadow:0 5px 15px rgba(0,0,0,0.08);
 
 }
+.product-preview-card{
+    background:#ffffff;
+    border-radius:15px;
+    padding:20px;
+    margin-top:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    border:1px solid #e5e5e5;
+}
+
+.product-preview-card h3{
+    color:#0099ff;
+    margin-bottom:10px;
+}
+
+.product-preview-card p{
+    margin:8px 0;
+    color:#555;
+    line-height:1.6;
+}
