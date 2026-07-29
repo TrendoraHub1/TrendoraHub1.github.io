@@ -1,1 +1,256 @@
+/* ====================================
+   RESET
+==================================== */
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f5f7fb;
+    color:#222;
+    line-height:1.7;
+}
+
+/* ====================================
+   HEADER
+==================================== */
+
+.admin-header{
+    background:#111;
+    color:#fff;
+    text-align:center;
+    padding:45px 20px;
+}
+
+.admin-header h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.admin-header p{
+    font-size:18px;
+    color:#ccc;
+}
+
+/* ====================================
+   CONTAINER
+==================================== */
+
+.admin-container{
+    max-width:900px;
+    margin:50px auto;
+    padding:0 20px;
+}
+
+/* ====================================
+   FORM
+==================================== */
+
+.product-form{
+    background:#fff;
+    padding:40px;
+    border-radius:18px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+/* ====================================
+   FORM GROUP
+==================================== */
+
+.form-group{
+
+    margin-bottom:25px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+
+    color:#222;
+
+}
+
+.form-group input,
+
+.form-group select,
+
+.form-group textarea{
+
+    width:100%;
+
+    padding:15px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    outline:none;
+
+    transition:.3s;
+
+    background:#fff;
+
+}
+
+.form-group input:focus,
+
+.form-group select:focus,
+
+.form-group textarea:focus{
+
+    border-color:#00c8ff;
+
+    box-shadow:0 0 10px rgba(0,200,255,.25);
+
+}
+
+.form-group textarea{
+
+    resize:vertical;
+
+    min-height:140px;
+
+}
+
+/* ====================================
+   BUTTON
+==================================== */
+
+.product-form button{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#00c8ff;
+
+    color:#fff;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.product-form button:hover{
+
+    background:#0099cc;
+
+    transform:translateY(-2px);
+
+}
+/* ====================================
+   RESPONSIVE
+==================================== */
+
+@media(max-width:768px){
+
+    .admin-header h1{
+
+        font-size:32px;
+
+    }
+
+    .admin-header p{
+
+        font-size:16px;
+
+    }
+
+    .product-form{
+
+        padding:25px;
+
+    }
+
+    .product-form button{
+
+        font-size:16px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .admin-container{
+
+        padding:0 15px;
+
+    }
+
+    .admin-header{
+
+        padding:35px 15px;
+
+    }
+
+    .admin-header h1{
+
+        font-size:26px;
+
+    }
+
+    .form-group input,
+
+    .form-group select,
+
+    .form-group textarea{
+
+        font-size:15px;
+
+        padding:13px;
+
+    }
+
+}
+
+/* ====================================
+   SCROLLBAR
+==================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#ececec;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#00c8ff;
+
+    border-radius:50px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#0099cc;
+
+}
