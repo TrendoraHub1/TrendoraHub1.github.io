@@ -19,6 +19,7 @@ savedProducts.forEach(function(product){
 
 
 // Product Card Function
+
 function createProductCard(product){
 
     return `
