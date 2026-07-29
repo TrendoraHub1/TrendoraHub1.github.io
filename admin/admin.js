@@ -6,6 +6,8 @@ const productForm = document.querySelector(".product-form");
 
 const productList = document.getElementById("product-list");
 
+let editingProductId = null;
+
 
 // Page load hone par saved products show karna
 let savedProducts = JSON.parse(localStorage.getItem("products")) || [];
