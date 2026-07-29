@@ -30,4 +30,24 @@ productForm.addEventListener("submit", function(event){
 
     console.log(product);
 
+    productList.innerHTML += `
+
+<div class="product-preview-card">
+
+    <h3>${product.name}</h3>
+
+    <p><strong>ID:</strong> ${product.id}</p>
+
+    <p><strong>Price:</strong> ${product.price}</p>
+
+    <p><strong>Main Category:</strong> ${product.mainCategory}</p>
+
+    <p><strong>Collection:</strong> ${product.collectionCategory}</p>
+
+    <p>${product.description}</p>
+
+</div>
+
+`;
+
 });
