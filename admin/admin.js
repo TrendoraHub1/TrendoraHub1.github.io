@@ -79,7 +79,9 @@ editBtn.addEventListener("click", function(){
     }
 
 
-    let productId = selectedProducts[0].dataset.id;
+   let productId = selectedProducts[0].dataset.id;
+
+editingProductId = productId;
 
 
     let products = JSON.parse(localStorage.getItem("products")) || [];
