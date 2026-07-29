@@ -56,6 +56,65 @@ deleteBtn.addEventListener("click", function(){
 
 });
 
+// ==========================
+// Edit Selected Product
+// ==========================
+
+const editBtn = document.getElementById("edit-btn");
+
+
+editBtn.addEventListener("click", function(){
+
+    let selectedProducts = document.querySelectorAll(".product-checkbox:checked");
+
+
+    if(selectedProducts.length !== 1){
+
+        alert("Please select only one product to edit");
+
+        return;
+
+    }
+
+
+    let productId = selectedProducts[0].dataset.id;
+
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+
+    let product = products.find(function(item){
+
+        return item.id === productId;
+
+    });
+
+
+
+    document.getElementById("product-id").value = product.id;
+
+
+    document.querySelectorAll('input[type="text"]')[0].value = product.name;
+
+
+    document.querySelectorAll('input[type="text"]')[1].value = product.price;
+
+
+    document.querySelector('input[type="url"]').value = product.affiliate;
+
+
+    document.querySelectorAll("select")[0].value = product.mainCategory;
+
+
+    document.querySelectorAll("select")[1].value = product.collectionCategory;
+
+
+    document.querySelector("textarea").value = product.description;
+
+
+
+});
+
 // Product Card Function
 
 function createProductCard(product){
