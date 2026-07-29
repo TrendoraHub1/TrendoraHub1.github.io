@@ -197,19 +197,48 @@ productForm.addEventListener("submit", function(event){
 
     // Local Storage me save karna
 
-    let products = JSON.parse(localStorage.getItem("products")) || [];
+let products = JSON.parse(localStorage.getItem("products")) || [];
 
+
+if (editingProductId === null) {
+
+    // New Product
 
     products.push(product);
 
+} else {
 
-    localStorage.setItem("products", JSON.stringify(products));
+    // Update Existing Product
+
+    products = products.map(function(item){
+
+        if(item.id === editingProductId){
+
+            return product;
+
+        }
+
+        return item;
+
+    });
+
+    editingProductId = null;
+
+}
 
 
+localStorage.setItem("products", JSON.stringify(products));
 
-    // Screen par product show karna
+
+// Product List Refresh
+
+productList.innerHTML = "";
+
+products.forEach(function(product){
 
     productList.innerHTML += createProductCard(product);
+
+});
 
 
 
