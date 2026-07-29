@@ -254,3 +254,69 @@ body{
     background:#0099cc;
 
 }
+/* ===========================
+   Manage Products Section
+=========================== */
+
+hr{
+
+    margin:40px 0;
+    border:none;
+    border-top:1px solid #dddddd;
+
+}
+
+.admin-container h2{
+
+    font-size:28px;
+    text-align:center;
+    margin-bottom:25px;
+    color:#222;
+
+}
+
+.admin-actions{
+
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+
+}
+/* ===========================
+   Manage Buttons
+=========================== */
+
+.admin-actions button{
+
+    background:#111827;
+    color:#ffffff;
+    border:none;
+    padding:14px 24px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+
+}
+
+.admin-actions button:hover{
+
+    background:#2563eb;
+    transform:translateY(-3px);
+
+}
+
+#product-list{
+
+    background:#ffffff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    min-height:220px;
+    padding:20px;
+    margin-top:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+
+}
