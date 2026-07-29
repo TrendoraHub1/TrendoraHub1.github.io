@@ -25,7 +25,15 @@ function createProductCard(product){
 
 <div class="product-preview-card">
 
-    <h3>${product.name}</h3>
+
+<input 
+type="checkbox" 
+class="product-checkbox"
+data-id="${product.id}"
+>
+
+
+<h3>${product.name}</h3>
 
     <p><strong>ID:</strong> ${product.id}</p>
 
