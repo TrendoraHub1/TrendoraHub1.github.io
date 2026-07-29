@@ -6,31 +6,22 @@ const productForm = document.querySelector(".product-form");
 
 const productList = document.getElementById("product-list");
 
-productForm.addEventListener("submit", function(event){
 
-    event.preventDefault();
+// Page load hone par saved products show karna
+let savedProducts = JSON.parse(localStorage.getItem("products")) || [];
 
-    const product = {
+savedProducts.forEach(function(product){
 
-        id: document.getElementById("product-id").value,
+    productList.innerHTML += createProductCard(product);
 
-        name: document.querySelectorAll('input[type="text"]')[0].value,
+});
 
-        price: document.querySelectorAll('input[type="text"]')[1].value,
 
-        affiliate: document.querySelector('input[type="url"]').value,
 
-        mainCategory: document.querySelectorAll("select")[0].value,
+// Product Card Function
+function createProductCard(product){
 
-        collectionCategory: document.querySelectorAll("select")[1].value,
-
-        description: document.querySelector("textarea").value
-
-    };
-
-    console.log(product);
-
-    productList.innerHTML += `
+    return `
 
 <div class="product-preview-card">
 
@@ -50,20 +41,66 @@ productForm.addEventListener("submit", function(event){
 
 `;
 
-});
+}
+
+
+
+// Publish Product
+
+productForm.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+
+
+    const product = {
+
+
+        id: document.getElementById("product-id").value,
+
+
+        name: document.querySelectorAll('input[type="text"]')[0].value,
+
+
+        price: document.querySelectorAll('input[type="text"]')[1].value,
+
+
+        affiliate: document.querySelector('input[type="url"]').value,
+
+
+        mainCategory: document.querySelectorAll("select")[0].value,
+
+
+        collectionCategory: document.querySelectorAll("select")[1].value,
+
+
+        description: document.querySelector("textarea").value
+
+
+    };
+
+
 
     console.log(product);
 
 
-    // ==========================
-    // Save Product in Local Storage
-    // ==========================
+
+    // Local Storage me save karna
 
     let products = JSON.parse(localStorage.getItem("products")) || [];
 
+
     products.push(product);
+
 
     localStorage.setItem("products", JSON.stringify(products));
 
 
-    productList.innerHTML += `
+
+    // Screen par product show karna
+
+    productList.innerHTML += createProductCard(product);
+
+
+
+});
