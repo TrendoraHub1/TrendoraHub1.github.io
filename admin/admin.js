@@ -53,3 +53,5 @@ productForm.addEventListener("submit", function(event){
 });
 
 console.log(productList);
+
+console.log(productList.innerHTML);
