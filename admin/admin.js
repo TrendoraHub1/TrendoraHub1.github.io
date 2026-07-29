@@ -52,6 +52,18 @@ productForm.addEventListener("submit", function(event){
 
 });
 
-console.log(productList);
+    console.log(product);
 
-console.log(productList.innerHTML);
+
+    // ==========================
+    // Save Product in Local Storage
+    // ==========================
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    products.push(product);
+
+    localStorage.setItem("products", JSON.stringify(products));
+
+
+    productList.innerHTML += `
