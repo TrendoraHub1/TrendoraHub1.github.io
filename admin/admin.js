@@ -45,3 +45,24 @@ publishButton.addEventListener("click", function(){
     console.log("Description:", description);
 
 });
+// =====================================
+// Create Product Object
+// =====================================
+
+const productData = {
+
+    name: document.querySelector('input[type="text"]').value,
+
+    price: document.querySelectorAll('input[type="text"]')[1].value,
+
+    affiliateLink: document.querySelector('input[type="url"]').value,
+
+    mainCategory: document.querySelectorAll("select")[0].value,
+
+    collectionCategory: document.querySelectorAll("select")[1].value,
+
+    description: document.querySelector("textarea").value
+
+};
+
+console.log(productData);
