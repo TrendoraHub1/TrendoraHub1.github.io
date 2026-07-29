@@ -210,6 +210,10 @@ z-index: 2;
     gap:35px;
 }
 
+.product-card:last-child{
+    grid-column:2;
+}
+
 .product-card{
     background:#fff;
     border-radius:18px;
