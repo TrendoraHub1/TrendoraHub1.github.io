@@ -16,7 +16,45 @@ savedProducts.forEach(function(product){
 
 });
 
+// ==========================
+// Delete Selected Products
+// ==========================
 
+const deleteBtn = document.getElementById("delete-btn");
+
+
+deleteBtn.addEventListener("click", function(){
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+
+    let selectedProducts = document.querySelectorAll(".product-checkbox:checked");
+
+
+    let selectedIds = [];
+
+
+    selectedProducts.forEach(function(checkbox){
+
+        selectedIds.push(checkbox.dataset.id);
+
+    });
+
+
+    products = products.filter(function(product){
+
+        return !selectedIds.includes(product.id);
+
+    });
+
+
+    localStorage.setItem("products", JSON.stringify(products));
+
+
+    location.reload();
+
+
+});
 
 // Product Card Function
 
