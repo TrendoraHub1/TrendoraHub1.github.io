@@ -1,285 +1,127 @@
+"use strict";
+
 // =====================================
 // TrendoraHub Admin Panel
 // =====================================
 
-"use strict";
-
-// =====================================
-// Elements
-// =====================================
-
 const productForm = document.querySelector(".product-form");
 const productList = document.getElementById("product-list");
+
 const deleteBtn = document.getElementById("delete-btn");
 const editBtn = document.getElementById("edit-btn");
+const productListBtn = document.getElementById("product-list-btn");
 
-// =====================================
-// Variables
-// =====================================
+let products = JSON.parse(localStorage.getItem("products")) || [];
 
 let editingProductId = null;
 
 let currentEditingImage = "";
-
 let currentEditingGallery = [];
+let currentEditingVideo = "";
 
-let products =
-JSON.parse(localStorage.getItem("products")) || [];
 
 // =====================================
 // Start
 // =====================================
 
 renderProducts();
-
 setNextProductId();
 
+
 // =====================================
-// Auto Generate Product ID
+// Product ID Generator
 // =====================================
 
 function setNextProductId(){
 
-
     let maxNumber = 0;
 
+    products.forEach(product => {
 
-    products.forEach(function(product){
-
-
-        const match =
-        product.id.match(/(\d+)$/);
-
+        const match = product.id.match(/(\d+)$/);
 
         if(match){
 
-
-            const number =
-            parseInt(match[1], 10);
-
+            const number = parseInt(match[1]);
 
             if(number > maxNumber){
 
-
                 maxNumber = number;
-
 
             }
 
-
         }
-
 
     });
 
 
-    const nextNumber =
-    maxNumber + 1;
-
-
-    const nextId =
-    "PRD" + String(nextNumber).padStart(3, "0");
-
-
     document.getElementById("product-id").value =
-    nextId;
-
+    "PRD" + String(maxNumber + 1).padStart(3,"0");
 
 }
 
 // =====================================
-// Render Products
+// Render Product List
 // =====================================
 
 function renderProducts(){
 
     productList.innerHTML = "";
 
-    products.forEach(function(product){
+    products.forEach(product => {
 
-        productList.innerHTML += createProductCard(product);
+        productList.innerHTML += `
 
-    });
+        <div class="product-preview-card">
 
-}
-
-// =====================================
-// Product Card
-// =====================================
-
-function createProductCard(product){
-
-    return `
-
-    <div class="product-preview-card">
-
-        <input
+            <input 
             type="checkbox"
             class="product-checkbox"
             data-id="${product.id}"
-        >
+            >
 
-        <img
+            <img 
             src="${product.image || ""}"
             alt="${product.name}"
-        >
+            >
 
-        <h3>${product.name}</h3>
+            <h3>${product.name}</h3>
 
-        <p><strong>ID:</strong> ${product.id}</p>
+            <p>ID: ${product.id}</p>
 
-        <p><strong>Price:</strong> ${product.price}</p>
+            <p>Price: ${product.price}</p>
 
-        <p><strong>Main Category:</strong> ${product.mainCategory}</p>
+            <p>Category: ${product.mainCategory}</p>
 
-        <p><strong>Collection:</strong> ${product.collectionCategory}</p>
+            <p>${product.description}</p>
 
-        <p>${product.description}</p>
+        </div>
 
-    </div>
+        `;
 
-    `;
+    });
 
 }
 
+
 // =====================================
-// Delete Products
+// Product List Button
 // =====================================
 
-deleteBtn.addEventListener("click", function(){
-
-    const selectedProducts =
-    document.querySelectorAll(".product-checkbox:checked");
-
-
-    if(selectedProducts.length === 0){
-
-        alert("Please select at least one product.");
-
-        return;
-
-    }
-
-
-    const selectedIds = [];
-
-
-    selectedProducts.forEach(function(item){
-
-        selectedIds.push(item.dataset.id);
-
-    });
-
-
-    products = products.filter(function(product){
-
-        return !selectedIds.includes(product.id);
-
-    });
-
-
-    localStorage.setItem(
-        "products",
-        JSON.stringify(products)
-    );
-
+productListBtn.addEventListener("click", function(){
 
     renderProducts();
 
-
 });
 
 
 // =====================================
-// Edit Product
-// =====================================
-
-editBtn.addEventListener("click", function(){
-
-
-    const selectedProducts =
-    document.querySelectorAll(".product-checkbox:checked");
-
-
-    if(selectedProducts.length !== 1){
-
-        alert("Please select only one product.");
-
-        return;
-
-    }
-
-
-    const productId =
-    selectedProducts[0].dataset.id;
-
-
-
-    const product =
-    products.find(function(item){
-
-        return item.id === productId;
-
-    });
-
-
-
-    editingProductId = product.id;
-
-
-    currentEditingImage =
-    product.image || "";
-
-
-    currentEditingGallery =
-    product.gallery || [];
-
-
-
-    document.getElementById("product-id").value =
-    product.id;
-
-
-
-    document.querySelectorAll('input[type="text"]')[0].value =
-    product.name;
-
-
-
-    document.querySelectorAll('input[type="text"]')[1].value =
-    product.price;
-
-
-
-    document.querySelector('input[type="url"]').value =
-    product.affiliate;
-
-
-
-    document.querySelectorAll("select")[0].value =
-    product.mainCategory;
-
-
-
-    document.querySelectorAll("select")[1].value =
-    product.collectionCategory;
-
-
-
-    document.querySelector("textarea").value =
-    product.description;
-
-
-
-});
-
-// =====================================
-// Publish Product
+// File Reader
 // =====================================
 
 function readFileAsDataURL(file){
 
-    return new Promise(function(resolve, reject){
+    return new Promise((resolve,reject)=>{
 
         const reader = new FileReader();
 
@@ -297,67 +139,206 @@ function readFileAsDataURL(file){
 
 }
 
+// =====================================
+// Delete Product
+// =====================================
 
-productForm.addEventListener("submit", function(event){
+deleteBtn.addEventListener("click", function(){
+
+    const selected =
+    document.querySelectorAll(".product-checkbox:checked");
+
+
+    if(selected.length === 0){
+
+        alert("Select product first.");
+
+        return;
+
+    }
+
+
+    const ids = [];
+
+    selected.forEach(item=>{
+
+        ids.push(item.dataset.id);
+
+    });
+
+
+    products = products.filter(product=>{
+
+        return !ids.includes(product.id);
+
+    });
+
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+
+
+    renderProducts();
+
+});
+
+
+// =====================================
+// Edit Product
+// =====================================
+
+editBtn.addEventListener("click", function(){
+
+    const selected =
+    document.querySelectorAll(".product-checkbox:checked");
+
+
+    if(selected.length !== 1){
+
+        alert("Select one product.");
+
+        return;
+
+    }
+
+
+    const id =
+    selected[0].dataset.id;
+
+
+    const product =
+    products.find(item=>item.id === id);
+
+
+
+    editingProductId = product.id;
+
+
+    currentEditingImage =
+    product.image || "";
+
+
+    currentEditingGallery =
+    product.gallery || [];
+
+
+    currentEditingVideo =
+    product.video || "";
+
+
+
+    document.getElementById("product-id").value =
+    product.id;
+
+
+    document.querySelectorAll('input[type="text"]')[0].value =
+    product.name;
+
+
+    document.querySelectorAll('input[type="text"]')[1].value =
+    product.price;
+
+
+    document.querySelector('input[type="url"]').value =
+    product.affiliate;
+
+
+    document.querySelectorAll("select")[0].value =
+    product.mainCategory;
+
+
+    document.querySelectorAll("select")[1].value =
+    product.collectionCategory;
+
+
+    document.querySelector("textarea").value =
+    product.description;
+
+
+});
+
+// =====================================
+// Publish Product
+// =====================================
+
+productForm.addEventListener("submit", async function(event){
 
     event.preventDefault();
 
 
     const imageFile =
-    document.getElementById("product-images").files[0];
+    document.getElementById("product-image").files[0];
 
 
     const galleryFiles =
     document.getElementById("product-gallery").files;
 
 
-    const imagePromise =
+    const videoFile =
+    document.getElementById("product-video").files[0];
+
+
+
+    const image =
     imageFile
-    ? readFileAsDataURL(imageFile)
-    : Promise.resolve(currentEditingImage);
+    ? await readFileAsDataURL(imageFile)
+    : currentEditingImage;
 
 
-    const galleryPromises = [];
+
+    let gallery = [];
 
 
     for(let i = 0; i < galleryFiles.length; i++){
 
-        galleryPromises.push(
-            readFileAsDataURL(galleryFiles[i])
+        gallery.push(
+            await readFileAsDataURL(galleryFiles[i])
         );
 
     }
 
 
-    Promise.all([
-        imagePromise,
-        Promise.all(galleryPromises)
-    ])
-    .then(function(results){
 
-        const image = results[0];
+    if(gallery.length === 0){
 
-        const gallery = results[1];
+        gallery = currentEditingGallery;
 
-        saveProduct(image, gallery);
+    }
 
-    });
+
+
+    const video =
+    videoFile
+    ? await readFileAsDataURL(videoFile)
+    : currentEditingVideo;
+
+
+
+    saveProduct(
+        image,
+        gallery,
+        video
+    );
 
 
 });
+
 
 
 // =====================================
 // Save Product
 // =====================================
 
-function saveProduct(image, gallery){
+function saveProduct(image,gallery,video){
 
 
     const product = {
 
 
-        id: document.getElementById("product-id").value,
+        id:
+        document.getElementById("product-id").value,
 
 
         name:
@@ -387,59 +368,36 @@ function saveProduct(image, gallery){
         image:image,
 
 
-        gallery:[]
+        gallery:gallery,
+
+
+        video:video
 
 
     };
 
 
 
-    if(gallery.length > 0){
-
-
-        product.gallery = gallery;
-
-
-    }
-
-    else{
-
-
-        product.gallery = currentEditingGallery;
-
-
-    }
-
-// =====================================
-// Continue Save Product
-// =====================================
-
-
     if(editingProductId === null){
-
 
         products.push(product);
 
-
     }
 
     else{
 
 
-        products = products.map(function(item){
-
+        products =
+        products.map(item=>{
 
             if(item.id === editingProductId){
 
-
                 return product;
-
 
             }
 
 
             return item;
-
 
         });
 
@@ -448,91 +406,71 @@ function saveProduct(image, gallery){
 
 
 
-    editingProductId = null;
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
 
+
+
+    editingProductId = null;
 
     currentEditingImage = "";
 
-
     currentEditingGallery = [];
 
-
-
-    localStorage.setItem(
-
-        "products",
-
-        JSON.stringify(products)
-
-    );
+    currentEditingVideo = "";
 
 
 
     renderProducts();
 
-
-
     productForm.reset();
-
 
     setNextProductId();
 
 
 }
-
 
 // =====================================
 // Clear Form
 // =====================================
 
-
 function clearForm(){
-
 
     productForm.reset();
 
-
     editingProductId = null;
-
 
     currentEditingImage = "";
 
-
     currentEditingGallery = [];
 
+    currentEditingVideo = "";
 
     setNextProductId();
 
-
 }
 
 
 // =====================================
-// Save Products
+// Save Products Backup
 // =====================================
-
 
 function saveProducts(){
 
-
     localStorage.setItem(
-
         "products",
-
         JSON.stringify(products)
-
     );
-
 
 }
 
+
 // =====================================
-// Future Features
+// Console
 // =====================================
 
-// Firebase Connection
-// Website Auto Sync
-// Dynamic Product Page
-
-
-console.log("TrendoraHub Admin Panel Loaded Successfully");
+console.log(
+    "TrendoraHub Admin Panel Loaded Successfully"
+);
