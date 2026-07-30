@@ -40,10 +40,15 @@ function loadProduct(){
     }
 
 
+   const products =
+JSON.parse(localStorage.getItem("products")) || [];
 
+const product =
+products.find(function(item){
 
+    return item.id === productID;
 
-    const product = productData[productID];
+});
 
 
 
@@ -59,9 +64,7 @@ function loadProduct(){
     }
 
 
-
-
-
+    
     document.getElementById("product-title").innerText = product.title;
 
 
@@ -366,14 +369,14 @@ function loadProduct(){
 
     if(title){
 
-        title.innerText = product.title;
+        title.innerText = product.name;
 
     }
 
 
     if(category){
 
-        category.innerText = product.category;
+        category.innerText = product.mainCategory;
 
     }
 
@@ -403,7 +406,7 @@ function loadProduct(){
 
     if(button){
 
-        button.href = product.link;
+        button.href = product.affiliate;
 
     }
 
