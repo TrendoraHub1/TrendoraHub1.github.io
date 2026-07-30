@@ -164,7 +164,11 @@ productForm.addEventListener("submit", function(event){
 
    const imageFile = document.getElementById("product-images").files[0];
 
+const reader = new FileReader();
+
 const product = {
+
+...
 
     id: document.getElementById("product-id").value,
 
