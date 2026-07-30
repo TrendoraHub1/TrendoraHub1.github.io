@@ -381,6 +381,45 @@ nav a.active{
     transform:translateY(-3px);
 
 }
+
+/* ====================================
+   LOAD MORE
+==================================== */
+
+.load-more{
+
+    text-align:center;
+
+    padding:60px 0;
+
+}
+
+.load-btn{
+
+    background:#111;
+
+    color:#fff;
+
+    border:none;
+
+    padding:15px 40px;
+
+    font-size:18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.load-btn:hover{
+
+    background:#00c8ff;
+
+}
+
 /* ====================================
    NEWSLETTER SECTION
 ==================================== */
