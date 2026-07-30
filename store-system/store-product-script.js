@@ -31,13 +31,13 @@ function loadProduct() {
     const products =
         JSON.parse(localStorage.getItem("products")) || [];
 
-    const product = products.find(function (item) {
+    const product = products.find(function(item){
 
         return item.id === productId;
 
     });
 
-    if (!product) {
+    if(!product){
 
         console.log("Product Not Found");
 
@@ -53,29 +53,25 @@ function loadProduct() {
    Display Product
 ========================================== */
 
-function displayProduct(product) {
-
-    // Basic Information
+function displayProduct(product){
 
     document.getElementById("product-title").innerText =
-        product.name;
+    product.name;
 
     document.getElementById("product-category").innerText =
-        product.mainCategory;
+    product.mainCategory;
 
     document.getElementById("product-description").innerText =
-        product.description;
+    product.description;
 
     document.getElementById("product-price").innerText =
-        product.price;
+    product.price;
 
     document.getElementById("main-product-image").src =
-        product.image;
+    product.image;
 
     document.getElementById("product-link").href =
-        product.affiliate;
-
-    // Extra Sections
+    product.affiliate;
 
     loadGallery(product);
 
@@ -98,11 +94,37 @@ function loadGallery(product){
 
     if(!galleryImages.length) return;
 
-    galleryImages.forEach(function(image){
+    // Agar gallery images saved hain
+    if(product.gallery && product.gallery.length > 0){
 
-        image.src = product.image;
+        galleryImages.forEach(function(img,index){
 
-    });
+            if(product.gallery[index]){
+
+                img.src = product.gallery[index];
+
+            }
+
+            else{
+
+                img.src = product.image;
+
+            }
+
+        });
+
+    }
+
+    // Agar gallery nahi hai
+    else{
+
+        galleryImages.forEach(function(img){
+
+            img.src = product.image;
+
+        });
+
+    }
 
 }
 
@@ -223,7 +245,8 @@ window.addEventListener("load", function(){
 
     document.body.style.opacity = "0";
 
-    document.body.style.transition = "opacity .5s ease";
+    document.body.style.transition =
+    "opacity .5s ease";
 
     setTimeout(function(){
 
@@ -255,5 +278,9 @@ if(buyButton){
     });
 
 }
+
+/* ==========================================
+   Console
+========================================== */
 
 console.log("TrendoraHub Store Product Loaded Successfully");
