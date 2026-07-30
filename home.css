@@ -334,6 +334,45 @@ nav a.active{
     box-shadow:0 15px 35px rgba(0,200,255,.35);
 
 }
+
+/* ====================================
+   LOAD MORE
+==================================== */
+
+.load-more{
+
+    text-align:center;
+
+    padding:60px 0;
+
+}
+
+.load-btn{
+
+    background:#111;
+
+    color:#fff;
+
+    border:none;
+
+    padding:15px 40px;
+
+    font-size:18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.load-btn:hover{
+
+    background:#00c8ff;
+
+}
+
 /* ====================================
    NEWSLETTER
 ==================================== */
