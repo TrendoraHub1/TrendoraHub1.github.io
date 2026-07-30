@@ -23,8 +23,6 @@ let currentEditingImage = "";
 
 let currentEditingGallery = [];
 
-let currentEditingVideo = "";
-
 let products =
 JSON.parse(localStorage.getItem("products")) || [];
 
@@ -33,6 +31,61 @@ JSON.parse(localStorage.getItem("products")) || [];
 // =====================================
 
 renderProducts();
+
+setNextProductId();
+
+// =====================================
+// Auto Generate Product ID
+// =====================================
+
+function setNextProductId(){
+
+
+    let maxNumber = 0;
+
+
+    products.forEach(function(product){
+
+
+        const match =
+        product.id.match(/(\d+)$/);
+
+
+        if(match){
+
+
+            const number =
+            parseInt(match[1], 10);
+
+
+            if(number > maxNumber){
+
+
+                maxNumber = number;
+
+
+            }
+
+
+        }
+
+
+    });
+
+
+    const nextNumber =
+    maxNumber + 1;
+
+
+    const nextId =
+    "PRD" + String(nextNumber).padStart(3, "0");
+
+
+    document.getElementById("product-id").value =
+    nextId;
+
+
+}
 
 // =====================================
 // Render Products
@@ -182,10 +235,6 @@ editBtn.addEventListener("click", function(){
     product.gallery || [];
 
 
-    currentEditingVideo =
-    product.video || "";
-
-
 
     document.getElementById("product-id").value =
     product.id;
@@ -228,6 +277,27 @@ editBtn.addEventListener("click", function(){
 // Publish Product
 // =====================================
 
+function readFileAsDataURL(file){
+
+    return new Promise(function(resolve, reject){
+
+        const reader = new FileReader();
+
+        reader.onload = function(){
+
+            resolve(reader.result);
+
+        };
+
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+
 productForm.addEventListener("submit", function(event){
 
     event.preventDefault();
@@ -237,30 +307,41 @@ productForm.addEventListener("submit", function(event){
     document.getElementById("product-images").files[0];
 
 
-    if(imageFile){
-
-        const reader = new FileReader();
-
-
-        reader.onload = function(){
-
-            saveProduct(reader.result);
-
-        };
+    const galleryFiles =
+    document.getElementById("product-gallery").files;
 
 
-        reader.readAsDataURL(imageFile);
+    const imagePromise =
+    imageFile
+    ? readFileAsDataURL(imageFile)
+    : Promise.resolve(currentEditingImage);
 
 
-    }
-
-    else{
+    const galleryPromises = [];
 
 
-        saveProduct(currentEditingImage);
+    for(let i = 0; i < galleryFiles.length; i++){
 
+        galleryPromises.push(
+            readFileAsDataURL(galleryFiles[i])
+        );
 
     }
+
+
+    Promise.all([
+        imagePromise,
+        Promise.all(galleryPromises)
+    ])
+    .then(function(results){
+
+        const image = results[0];
+
+        const gallery = results[1];
+
+        saveProduct(image, gallery);
+
+    });
 
 
 });
@@ -270,16 +351,7 @@ productForm.addEventListener("submit", function(event){
 // Save Product
 // =====================================
 
-function saveProduct(image){
-
-
-    const galleryFiles =
-    document.getElementById("product-gallery").files;
-
-
-    const videoFile =
-    document.getElementById("product-video").files[0];
-
+function saveProduct(image, gallery){
 
 
     const product = {
@@ -315,29 +387,10 @@ function saveProduct(image){
         image:image,
 
 
-        gallery:[],
-
-
-        video:""
+        gallery:[]
 
 
     };
-
-
-
-    const gallery = [];
-
-
-
-    for(let i = 0; i < galleryFiles.length; i++){
-
-
-        gallery.push(
-            URL.createObjectURL(galleryFiles[i])
-        );
-
-
-    }
 
 
 
@@ -353,26 +406,6 @@ function saveProduct(image){
 
 
         product.gallery = currentEditingGallery;
-
-
-    }
-
-
-
-    if(videoFile){
-
-
-        product.video =
-        URL.createObjectURL(videoFile);
-
-
-    }
-
-    else{
-
-
-        product.video =
-        currentEditingVideo;
 
 
     }
@@ -424,9 +457,6 @@ function saveProduct(image){
     currentEditingGallery = [];
 
 
-    currentEditingVideo = "";
-
-
 
     localStorage.setItem(
 
@@ -444,6 +474,8 @@ function saveProduct(image){
 
     productForm.reset();
 
+
+    setNextProductId();
 
 
 }
@@ -469,7 +501,7 @@ function clearForm(){
     currentEditingGallery = [];
 
 
-    currentEditingVideo = "";
+    setNextProductId();
 
 
 }
@@ -498,7 +530,6 @@ function saveProducts(){
 // Future Features
 // =====================================
 
-// Video Upload
 // Firebase Connection
 // Website Auto Sync
 // Dynamic Product Page
