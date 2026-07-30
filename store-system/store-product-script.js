@@ -1,526 +1,259 @@
 "use strict";
 
+/* ==========================================
+   TrendoraHub Store Product Script
+========================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-
+document.addEventListener("DOMContentLoaded", function () {
 
     loadProduct();
 
-
 });
 
+/* ==========================================
+   Load Product
+========================================== */
 
-
-
-
-/* ==========================
-   PRODUCT LOADER
-========================== */
-
-
-function loadProduct(){
-
+function loadProduct() {
 
     const params = new URLSearchParams(window.location.search);
 
+    const productId = params.get("id");
 
-    const productID = params.get("id");
-
-
-
-    if(!productID){
-
+    if (!productId) {
 
         console.log("No Product ID Found");
 
-
         return;
-
 
     }
 
+    const products =
+        JSON.parse(localStorage.getItem("products")) || [];
 
-   const products =
-JSON.parse(localStorage.getItem("products")) || [];
+    const product = products.find(function (item) {
 
-const product =
-products.find(function(item){
+        return item.id === productId;
 
-    return item.id === productID;
+    });
 
-});
-
-
-
-    if(!product){
-
+    if (!product) {
 
         console.log("Product Not Found");
 
-
         return;
-
 
     }
 
-
-    
-    document.getElementById("product-title").innerText = product.title;
-
-
-
-    document.getElementById("product-category").innerText = product.category;
-
-
-
-    document.getElementById("product-description").innerText = product.description;
-
-
-
-    document.getElementById("product-price").innerText = product.price;
-
-
-
-    document.getElementById("main-product-image").src = product.image;
-
-
-
-    document.getElementById("product-link").href = product.link;
-
-
+    displayProduct(product);
 
 }
 
+/* ==========================================
+   Display Product
+========================================== */
 
+function displayProduct(product) {
 
+    // Basic Information
 
+    document.getElementById("product-title").innerText =
+        product.name;
 
+    document.getElementById("product-category").innerText =
+        product.mainCategory;
 
+    document.getElementById("product-description").innerText =
+        product.description;
 
-/* ==========================
-   IMAGE ERROR HANDLING
-========================== */
+    document.getElementById("product-price").innerText =
+        product.price;
 
+    document.getElementById("main-product-image").src =
+        product.image;
 
-const mainImage = document.getElementById("main-product-image");
+    document.getElementById("product-link").href =
+        product.affiliate;
 
+    // Extra Sections
 
+    loadGallery(product);
 
-if(mainImage){
+    loadVideo(product);
 
+    loadFeatures(product);
 
-    mainImage.addEventListener("error",()=>{
-
-
-        mainImage.src="../assets/images/image-not-found.png";
-
-
-    });
-
+    loadExtraInformation(product);
 
 }
- 
-/* ==========================
-   LOAD PRODUCT GALLERY
-========================== */
 
+/* ==========================================
+   Product Gallery
+========================================== */
 
 function loadGallery(product){
 
-
-    const galleryImages = document.querySelectorAll(".gallery-image");
-
-
+    const galleryImages =
+    document.querySelectorAll(".gallery-image");
 
     if(!galleryImages.length) return;
 
+    galleryImages.forEach(function(image){
 
-
-    product.gallery.forEach((image,index)=>{
-
-
-        if(galleryImages[index]){
-
-
-            galleryImages[index].src = image;
-
-
-        }
-
+        image.src = product.image;
 
     });
 
-
 }
 
-
-
-
-
-
-
-/* ==========================
-   LOAD PRODUCT VIDEO
-========================== */
-
+/* ==========================================
+   Product Video
+========================================== */
 
 function loadVideo(product){
 
-
-    const video = document.getElementById("product-video");
-
-
+    const video =
+    document.getElementById("product-video");
 
     if(!video) return;
 
-
-
     if(product.video){
 
-
-        video.querySelector("source").src = product.video;
-
+        video.querySelector("source").src =
+        product.video;
 
         video.load();
-
 
     }
 
     else{
 
-
-        video.style.display="none";
-
+        video.style.display = "none";
 
     }
 
-
 }
 
-
-
-
-
-
-
-/* ==========================
-   LOAD FEATURES
-========================== */
-
+/* ==========================================
+   Product Features
+========================================== */
 
 function loadFeatures(product){
 
-
-    const featureList = document.getElementById("product-features-list");
-
-
+    const featureList =
+    document.getElementById("product-features-list");
 
     if(!featureList) return;
 
+    featureList.innerHTML = "";
 
+    const features = [
 
-    featureList.innerHTML="";
+        "Premium Quality",
 
+        "Trending Product",
 
+        "Fast Shipping",
 
-    product.features.forEach(feature=>{
+        "Carefully Selected"
 
+    ];
 
-        const li=document.createElement("li");
+    features.forEach(function(feature){
 
+        const li = document.createElement("li");
 
-        li.innerText=feature;
-
+        li.innerText = feature;
 
         featureList.appendChild(li);
 
-
     });
-
 
 }
 
-
-
-
-
-
-
-/* ==========================
-   LOAD EXTRA DESCRIPTION
-========================== */
-
+/* ==========================================
+   Extra Product Information
+========================================== */
 
 function loadExtraInformation(product){
 
-
-    const extra=document.getElementById("product-extra-description");
-
-
+    const extra =
+    document.getElementById("product-extra-description");
 
     if(!extra) return;
 
-
-
-    extra.innerText = product.extraDescription;
-
-
+    extra.innerText =
+    product.description;
 
 }
 
+/* ==========================================
+   Image Error Handling
+========================================== */
 
+const mainImage =
+document.getElementById("main-product-image");
 
+if(mainImage){
 
+    mainImage.addEventListener("error", function(){
 
+        mainImage.src =
+        "../assets/images/image-not-found.png";
 
-
-/* ==========================
-   UPDATED PRODUCT LOADER
-========================== */
-
-
-function displayProduct(product){
-
-
-
-    loadGallery(product);
-
-
-
-    loadVideo(product);
-
-
-
-    loadFeatures(product);
-
-
-
-    loadExtraInformation(product);
-
-
+    });
 
 }
- 
-/* ==========================
-   COMPLETE PRODUCT LOADER UPDATE
-========================== */
 
+/* ==========================================
+   Lazy Loading Images
+========================================== */
 
-function loadProduct(){
+document.querySelectorAll("img").forEach(function(img){
 
-
-    const params = new URLSearchParams(window.location.search);
-
-
-    const productID = params.get("id");
-
-
-
-    if(!productID){
-
-
-        console.log("No Product Selected");
-
-
-        return;
-
-
-    }
-
-
-
-
-
-    const product = productData[productID];
-
-
-
-    if(!product){
-
-
-        console.log("Product Data Not Found");
-
-
-        return;
-
-
-    }
-
-
-
-
-
-    // Basic Information
-
-
-    const title = document.getElementById("product-title");
-
-    const category = document.getElementById("product-category");
-
-    const description = document.getElementById("product-description");
-
-    const price = document.getElementById("product-price");
-
-    const image = document.getElementById("main-product-image");
-
-    const button = document.getElementById("product-link");
-
-
-
-    if(title){
-
-        title.innerText = product.name;
-
-    }
-
-
-    if(category){
-
-        category.innerText = product.mainCategory;
-
-    }
-
-
-    if(description){
-
-        description.innerText = product.description;
-
-    }
-
-
-    if(price){
-
-        price.innerText = product.price;
-
-    }
-
-
-    if(image){
-
-        image.src = product.image;
-
-        image.loading = "lazy";
-
-    }
-
-
-    if(button){
-
-        button.href = product.affiliate;
-
-    }
-
-
-
-
-
-    // Additional Sections
-
-
-    displayProduct(product);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/* ==========================
-   IMAGE LAZY LOADING
-========================== */
-
-
-document.querySelectorAll("img").forEach(img=>{
-
-
-    img.loading="lazy";
-
+    img.loading = "lazy";
 
 });
 
+/* ==========================================
+   Page Animation
+========================================== */
 
+window.addEventListener("load", function(){
 
+    document.body.style.opacity = "0";
 
+    document.body.style.transition = "opacity .5s ease";
 
+    setTimeout(function(){
 
-
-/* ==========================
-   PAGE ANIMATION
-========================== */
-
-
-window.addEventListener("load",()=>{
-
-
-    document.body.style.opacity="0";
-
-
-    document.body.style.transition="opacity .5s ease";
-
-
-
-    setTimeout(()=>{
-
-
-        document.body.style.opacity="1";
-
+        document.body.style.opacity = "1";
 
     },100);
 
-
-
 });
 
+/* ==========================================
+   Buy Button Effect
+========================================== */
 
-
-
-
-
-
-/* ==========================
-   BUTTON EFFECT
-========================== */
-
-
-const buyButton = document.querySelector(".buy-button");
-
-
+const buyButton =
+document.querySelector(".buy-button");
 
 if(buyButton){
 
+    buyButton.addEventListener("mouseenter", function(){
 
-    buyButton.addEventListener("mouseenter",()=>{
-
-
-        buyButton.style.transform="scale(1.05)";
-
+        buyButton.style.transform = "scale(1.05)";
 
     });
 
+    buyButton.addEventListener("mouseleave", function(){
 
-
-    buyButton.addEventListener("mouseleave",()=>{
-
-
-        buyButton.style.transform="scale(1)";
-
+        buyButton.style.transform = "scale(1)";
 
     });
-
-
 
 }
 
-
-
-
-
-
-
-console.log("TrendoraHub Store Product System Loaded Successfully");
+console.log("TrendoraHub Store Product Loaded Successfully");
