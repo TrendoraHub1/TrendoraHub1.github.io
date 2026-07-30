@@ -2,49 +2,111 @@
 // TrendoraHub Admin Panel
 // =====================================
 
-const productForm = document.querySelector(".product-form");
+"use strict";
 
+// =====================================
+// Elements
+// =====================================
+
+const productForm = document.querySelector(".product-form");
 const productList = document.getElementById("product-list");
+const deleteBtn = document.getElementById("delete-btn");
+const editBtn = document.getElementById("edit-btn");
+
+// =====================================
+// Variables
+// =====================================
 
 let editingProductId = null;
-
 let currentEditingImage = "";
 
-// Page Load
+// =====================================
+// Load Products
+// =====================================
 
-let savedProducts =
-JSON.parse(localStorage.getItem("products")) || [];
+let products = JSON.parse(localStorage.getItem("products")) || [];
 
-savedProducts.forEach(function(product){
+renderProducts();
 
-    productList.innerHTML += createProductCard(product);
+// =====================================
+// Render Products
+// =====================================
 
-});
+function renderProducts(){
 
-// ==========================
-// Delete Selected Products
-// ==========================
+    productList.innerHTML = "";
 
-const deleteBtn = document.getElementById("delete-btn");
+    products.forEach(function(product){
 
-
-deleteBtn.addEventListener("click", function(){
-
-    let products = JSON.parse(localStorage.getItem("products")) || [];
-
-
-    let selectedProducts = document.querySelectorAll(".product-checkbox:checked");
-
-
-    let selectedIds = [];
-
-
-    selectedProducts.forEach(function(checkbox){
-
-        selectedIds.push(checkbox.dataset.id);
+        productList.innerHTML += createProductCard(product);
 
     });
 
+}
+
+// =====================================
+// Product Card
+// =====================================
+
+function createProductCard(product){
+
+    return `
+
+    <div class="product-preview-card">
+
+        <input
+            type="checkbox"
+            class="product-checkbox"
+            data-id="${product.id}"
+        >
+
+        <img
+            src="${product.image || ""}"
+            alt="${product.name}"
+        >
+
+        <h3>${product.name}</h3>
+
+        <p><strong>ID:</strong> ${product.id}</p>
+
+        <p><strong>Price:</strong> ${product.price}</p>
+
+        <p><strong>Main Category:</strong> ${product.mainCategory}</p>
+
+        <p><strong>Collection:</strong> ${product.collectionCategory}</p>
+
+        <p>${product.description}</p>
+
+    </div>
+
+    `;
+
+}
+
+// =====================================
+// Delete Products
+// =====================================
+
+deleteBtn.addEventListener("click", function(){
+
+    const selectedProducts =
+    document.querySelectorAll(".product-checkbox:checked");
+
+    if(selectedProducts.length === 0){
+
+        alert("Please select at least one product.");
+
+        return;
+
+    }
+
+    const selectedIds = [];
+
+    selectedProducts.forEach(function(item){
+
+        selectedIds.push(item.dataset.id);
+
+    });
 
     products = products.filter(function(product){
 
@@ -52,195 +114,115 @@ deleteBtn.addEventListener("click", function(){
 
     });
 
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
 
-    localStorage.setItem("products", JSON.stringify(products));
-
-
-    location.reload();
-
+    renderProducts();
 
 });
 
-// ==========================
-// Edit Selected Product
-// ==========================
-
-const editBtn = document.getElementById("edit-btn");
-
+// =====================================
+// Edit Product
+// =====================================
 
 editBtn.addEventListener("click", function(){
 
-    let selectedProducts = document.querySelectorAll(".product-checkbox:checked");
-
+    const selectedProducts =
+    document.querySelectorAll(".product-checkbox:checked");
 
     if(selectedProducts.length !== 1){
 
-        alert("Please select only one product to edit");
+        alert("Please select only one product.");
 
         return;
 
     }
 
+    const productId =
+    selectedProducts[0].dataset.id;
 
-   let productId = selectedProducts[0].dataset.id;
-
-editingProductId = productId;
-
-
-    let products = JSON.parse(localStorage.getItem("products")) || [];
-
-
-    let product = products.find(function(item){
+    const product =
+    products.find(function(item){
 
         return item.id === productId;
 
     });
 
+    editingProductId = product.id;
 
+    currentEditingImage = product.image || "";
 
-    document.getElementById("product-id").value = product.id;
+    document.getElementById("product-id").value =
+    product.id;
 
+    document.querySelectorAll('input[type="text"]')[0].value =
+    product.name;
 
-    document.querySelectorAll('input[type="text"]')[0].value = product.name;
+    document.querySelectorAll('input[type="text"]')[1].value =
+    product.price;
 
+    document.querySelector('input[type="url"]').value =
+    product.affiliate;
 
-    document.querySelectorAll('input[type="text"]')[1].value = product.price;
+    document.querySelectorAll("select")[0].value =
+    product.mainCategory;
 
+    document.querySelectorAll("select")[1].value =
+    product.collectionCategory;
 
-    document.querySelector('input[type="url"]').value = product.affiliate;
-
-
-    document.querySelectorAll("select")[0].value = product.mainCategory;
-
-
-    document.querySelectorAll("select")[1].value = product.collectionCategory;
-
-
-    document.querySelector("textarea").value = product.description;
-
-    currentEditingImage = product.image;
+    document.querySelector("textarea").value =
+    product.description;
 
 });
-
-// Product Card Function
-
-function createProductCard(product){
-
-   return `
-
-<div class="product-preview-card">
-
-<input
-type="checkbox"
-class="product-checkbox"
-data-id="${product.id}"
->
-
-<img src="${product.image}" alt="${product.name}">
-
-<h3>${product.name}</h3>
-
-    <p><strong>ID:</strong> ${product.id}</p>
-
-    <p><strong>Price:</strong> ${product.price}</p>
-
-    <p><strong>Main Category:</strong> ${product.mainCategory}</p>
-
-    <p><strong>Collection:</strong> ${product.collectionCategory}</p>
-
-    <p>${product.description}</p>
-
-</div>
-
-`;
-
-}
-
-
 
 // =====================================
 // Publish Product
 // =====================================
 
-productForm.addEventListener("submit", function (event) {
+productForm.addEventListener("submit", function(event){
 
     event.preventDefault();
 
-    const imageFile = document.getElementById("product-images").files[0];
+    const imageFile =
+    document.getElementById("product-images").files[0];
 
-    const hasNewImage = imageFile !== undefined && imageFile !== null;
+    // =====================================
+    // Image Selected
+    // =====================================
 
-    if (!imageFile) {
+    if(imageFile){
 
-        alert("Please select a product image.");
+        const reader = new FileReader();
 
-        return;
+        reader.onload = function(){
 
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = function () {
-
-        const product = {
-
-            id: document.getElementById("product-id").value,
-
-            name: document.querySelectorAll('input[type="text"]')[0].value,
-
-            price: document.querySelectorAll('input[type="text"]')[1].value,
-
-            affiliate: document.querySelector('input[type="url"]').value,
-
-            mainCategory: document.querySelectorAll("select")[0].value,
-
-            collectionCategory: document.querySelectorAll("select")[1].value,
-
-            description: document.querySelector("textarea").value,
-
-            image: reader.result
+            saveProduct(reader.result);
 
         };
 
-        let products = JSON.parse(localStorage.getItem("products")) || [];
+        reader.readAsDataURL(imageFile);
 
-        if (editingProductId === null) {
+    }
 
-            products.push(product);
+    // =====================================
+    // No New Image (Editing)
+    // =====================================
 
-        } else {
+    else{
 
-            products = products.map(function (item) {
+        saveProduct(currentEditingImage);
 
-                if (item.id === editingProductId) {
+    }
 
-                    return product;
+});
 
-                }
+// =====================================
+// Save Product Function
+// =====================================
 
-                return item;
-
-            });
-
-            editingProductId = null;
-
-        }
-
-        localStorage.setItem("products", JSON.stringify(products));
-
-        productList.innerHTML = "";
-
-        products.forEach(function (item) {
-
-            productList.innerHTML += createProductCard(item);
-
-        });
-
-        productForm.reset();
-
-    };
-
-    if (!hasNewImage) {
+function saveProduct(image){
 
     const product = {
 
@@ -258,46 +240,78 @@ productForm.addEventListener("submit", function (event) {
 
         description: document.querySelector("textarea").value,
 
-        image: currentEditingImage
+        image: image
 
     };
 
-    let products = JSON.parse(localStorage.getItem("products")) || [];
-
-    if (editingProductId === null) {
+    if(editingProductId === null){
 
         products.push(product);
 
-    } else {
+    }
+
+    else{
 
         products = products.map(function(item){
 
-            return item.id === editingProductId ? product : item;
+            if(item.id === editingProductId){
+
+                return product;
+
+            }
+
+            return item;
 
         });
 
-        editingProductId = null;
-
     }
 
-    localStorage.setItem("products", JSON.stringify(products));
-
-    productList.innerHTML = "";
-
-    products.forEach(function(item){
-
-        productList.innerHTML += createProductCard(item);
-
-    });
-
-    productForm.reset();
+    editingProductId = null;
 
     currentEditingImage = "";
 
-    return;
+    localStorage.setItem(
+        "products",
+        JSON.stringify(products)
+    );
+
+    renderProducts();
+
+    productForm.reset();
 
 }
 
-    reader.readAsDataURL(imageFile);
+// =====================================
+// Utility Functions
+// =====================================
 
-});
+function clearForm(){
+
+    productForm.reset();
+
+    editingProductId = null;
+
+    currentEditingImage = "";
+
+}
+
+function saveProducts(){
+
+    localStorage.setItem(
+
+        "products",
+
+        JSON.stringify(products)
+
+    );
+
+}
+
+// =====================================
+// Future Features
+// =====================================
+
+// Video Upload
+// Firebase Connection
+// Website Auto Sync
+// Dynamic Product Page
