@@ -25,11 +25,12 @@ let currentEditingGallery = [];
 
 let currentEditingVideo = "";
 
-// =====================================
-// Load Products
-// =====================================
+let products =
+JSON.parse(localStorage.getItem("products")) || [];
 
-let products = JSON.parse(localStorage.getItem("products")) || [];
+// =====================================
+// Start
+// =====================================
 
 renderProducts();
 
@@ -97,6 +98,7 @@ deleteBtn.addEventListener("click", function(){
     const selectedProducts =
     document.querySelectorAll(".product-checkbox:checked");
 
+
     if(selectedProducts.length === 0){
 
         alert("Please select at least one product.");
@@ -105,7 +107,9 @@ deleteBtn.addEventListener("click", function(){
 
     }
 
+
     const selectedIds = [];
+
 
     selectedProducts.forEach(function(item){
 
@@ -113,20 +117,25 @@ deleteBtn.addEventListener("click", function(){
 
     });
 
+
     products = products.filter(function(product){
 
         return !selectedIds.includes(product.id);
 
     });
 
+
     localStorage.setItem(
         "products",
         JSON.stringify(products)
     );
 
+
     renderProducts();
 
+
 });
+
 
 // =====================================
 // Edit Product
@@ -134,8 +143,10 @@ deleteBtn.addEventListener("click", function(){
 
 editBtn.addEventListener("click", function(){
 
+
     const selectedProducts =
     document.querySelectorAll(".product-checkbox:checked");
+
 
     if(selectedProducts.length !== 1){
 
@@ -145,8 +156,11 @@ editBtn.addEventListener("click", function(){
 
     }
 
+
     const productId =
     selectedProducts[0].dataset.id;
+
+
 
     const product =
     products.find(function(item){
@@ -155,34 +169,58 @@ editBtn.addEventListener("click", function(){
 
     });
 
+
+
     editingProductId = product.id;
 
-currentEditingImage = product.image || "";
 
-currentEditingGallery = product.gallery || [];
+    currentEditingImage =
+    product.image || "";
 
-currentEditingVideo = product.video || "";
+
+    currentEditingGallery =
+    product.gallery || [];
+
+
+    currentEditingVideo =
+    product.video || "";
+
+
 
     document.getElementById("product-id").value =
     product.id;
 
+
+
     document.querySelectorAll('input[type="text"]')[0].value =
     product.name;
+
+
 
     document.querySelectorAll('input[type="text"]')[1].value =
     product.price;
 
+
+
     document.querySelector('input[type="url"]').value =
     product.affiliate;
+
+
 
     document.querySelectorAll("select")[0].value =
     product.mainCategory;
 
+
+
     document.querySelectorAll("select")[1].value =
     product.collectionCategory;
 
+
+
     document.querySelector("textarea").value =
     product.description;
+
+
 
 });
 
@@ -194,16 +232,15 @@ productForm.addEventListener("submit", function(event){
 
     event.preventDefault();
 
+
     const imageFile =
     document.getElementById("product-images").files[0];
 
-    // =====================================
-    // Image Selected
-    // =====================================
 
     if(imageFile){
 
         const reader = new FileReader();
+
 
         reader.onload = function(){
 
@@ -211,136 +248,240 @@ productForm.addEventListener("submit", function(event){
 
         };
 
+
         reader.readAsDataURL(imageFile);
 
-    }
 
-    // =====================================
-    // No New Image (Editing)
-    // =====================================
+    }
 
     else{
 
+
         saveProduct(currentEditingImage);
+
 
     }
 
+
 });
 
+
 // =====================================
-// Save Product Function
+// Save Product
 // =====================================
 
 function saveProduct(image){
 
+
     const galleryFiles =
     document.getElementById("product-gallery").files;
+
 
     const videoFile =
     document.getElementById("product-video").files[0];
 
+
+
     const product = {
+
 
         id: document.getElementById("product-id").value,
 
-        name: document.querySelectorAll('input[type="text"]')[0].value,
 
-        price: document.querySelectorAll('input[type="text"]')[1].value,
+        name:
+        document.querySelectorAll('input[type="text"]')[0].value,
 
-        affiliate: document.querySelector('input[type="url"]').value,
 
-        mainCategory: document.querySelectorAll("select")[0].value,
+        price:
+        document.querySelectorAll('input[type="text"]')[1].value,
 
-        collectionCategory: document.querySelectorAll("select")[1].value,
 
-        description: document.querySelector("textarea").value,
+        affiliate:
+        document.querySelector('input[type="url"]').value,
 
-        image: image,
 
-        gallery: [],
+        mainCategory:
+        document.querySelectorAll("select")[0].value,
 
-        video: ""
+
+        collectionCategory:
+        document.querySelectorAll("select")[1].value,
+
+
+        description:
+        document.querySelector("textarea").value,
+
+
+        image:image,
+
+
+        gallery:[],
+
+
+        video:""
+
 
     };
 
+
+
     const gallery = [];
 
+
+
     for(let i = 0; i < galleryFiles.length; i++){
+
 
         gallery.push(
             URL.createObjectURL(galleryFiles[i])
         );
 
+
     }
+
+
 
     if(gallery.length > 0){
 
+
         product.gallery = gallery;
 
-    }else{
+
+    }
+
+    else{
+
 
         product.gallery = currentEditingGallery;
 
+
     }
+
+
 
     if(videoFile){
 
-        product.video = URL.createObjectURL(videoFile);
 
-    }else{
+        product.video =
+        URL.createObjectURL(videoFile);
 
-        product.video = currentEditingVideo;
 
     }
+
+    else{
+
+
+        product.video =
+        currentEditingVideo;
+
+
+    }
+
+// =====================================
+// Continue Save Product
+// =====================================
+
 
     if(editingProductId === null){
 
+
         products.push(product);
 
-    }else{
-
-        products = products.map(function(item){
-
-            return item.id === editingProductId ? product : item;
-
-        });
 
     }
 
+    else{
+
+
+        products = products.map(function(item){
+
+
+            if(item.id === editingProductId){
+
+
+                return product;
+
+
+            }
+
+
+            return item;
+
+
+        });
+
+
+    }
+
+
+
     editingProductId = null;
 
+
     currentEditingImage = "";
+
 
     currentEditingGallery = [];
 
+
     currentEditingVideo = "";
 
+
+
     localStorage.setItem(
+
         "products",
+
         JSON.stringify(products)
+
     );
+
+
 
     renderProducts();
 
+
+
     productForm.reset();
+
+
 
 }
 
+
 // =====================================
-// Utility Functions
+// Clear Form
 // =====================================
+
 
 function clearForm(){
 
+
     productForm.reset();
+
 
     editingProductId = null;
 
+
     currentEditingImage = "";
+
+
+    currentEditingGallery = [];
+
+
+    currentEditingVideo = "";
+
 
 }
 
+
+// =====================================
+// Save Products
+// =====================================
+
+
 function saveProducts(){
+
 
     localStorage.setItem(
 
@@ -349,6 +490,7 @@ function saveProducts(){
         JSON.stringify(products)
 
     );
+
 
 }
 
@@ -360,3 +502,6 @@ function saveProducts(){
 // Firebase Connection
 // Website Auto Sync
 // Dynamic Product Page
+
+
+console.log("TrendoraHub Admin Panel Loaded Successfully");
