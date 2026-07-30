@@ -442,11 +442,9 @@ window.addEventListener("load",()=>{
 
 });
 
-/* ====================================
-   LOAD GADGET PRODUCTS
-==================================== */
-
-loadGadgetProducts();
+// =====================================
+// Load Gadget Products
+// =====================================
 
 function loadGadgetProducts(){
 
@@ -454,9 +452,10 @@ function loadGadgetProducts(){
 
     if(!productGrid) return;
 
-    let products = JSON.parse(localStorage.getItem("products")) || [];
+    const products =
+    JSON.parse(localStorage.getItem("products")) || [];
 
-    let gadgetProducts = products.filter(function(product){
+    const gadgetProducts = products.filter(function(product){
 
         return product.mainCategory === "Gadgets";
 
@@ -476,8 +475,12 @@ function loadGadgetProducts(){
 
             <p>${product.description}</p>
 
-            <a href="store-system/store-product.html?id=${product.id}" class="buy-btn">
-                View Product
+            <a
+            href="store-system/store-product.html?id=${product.id}"
+            class="buy-btn">
+
+            View Product
+
             </a>
 
         </div>
@@ -487,3 +490,5 @@ function loadGadgetProducts(){
     });
 
 }
+
+loadGadgetProducts();
