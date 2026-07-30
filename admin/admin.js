@@ -244,6 +244,64 @@ productForm.addEventListener("submit", function (event) {
 
     };
 
+    if (!hasNewImage) {
+
+    const product = {
+
+        id: document.getElementById("product-id").value,
+
+        name: document.querySelectorAll('input[type="text"]')[0].value,
+
+        price: document.querySelectorAll('input[type="text"]')[1].value,
+
+        affiliate: document.querySelector('input[type="url"]').value,
+
+        mainCategory: document.querySelectorAll("select")[0].value,
+
+        collectionCategory: document.querySelectorAll("select")[1].value,
+
+        description: document.querySelector("textarea").value,
+
+        image: currentEditingImage
+
+    };
+
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    if (editingProductId === null) {
+
+        products.push(product);
+
+    } else {
+
+        products = products.map(function(item){
+
+            return item.id === editingProductId ? product : item;
+
+        });
+
+        editingProductId = null;
+
+    }
+
+    localStorage.setItem("products", JSON.stringify(products));
+
+    productList.innerHTML = "";
+
+    products.forEach(function(item){
+
+        productList.innerHTML += createProductCard(item);
+
+    });
+
+    productForm.reset();
+
+    currentEditingImage = "";
+
+    return;
+
+}
+
     reader.readAsDataURL(imageFile);
 
 });
