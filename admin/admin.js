@@ -157,7 +157,11 @@ editBtn.addEventListener("click", function(){
 
     editingProductId = product.id;
 
-    currentEditingImage = product.image || "";
+currentEditingImage = product.image || "";
+
+currentEditingGallery = product.gallery || [];
+
+currentEditingVideo = product.video || "";
 
     document.getElementById("product-id").value =
     product.id;
@@ -229,6 +233,12 @@ productForm.addEventListener("submit", function(event){
 
 function saveProduct(image){
 
+    const galleryFiles =
+    document.getElementById("product-gallery").files;
+
+    const videoFile =
+    document.getElementById("product-video").files[0];
+
     const product = {
 
         id: document.getElementById("product-id").value,
@@ -245,9 +255,41 @@ function saveProduct(image){
 
         description: document.querySelector("textarea").value,
 
-        image: image
+        image: image,
+
+        gallery: [],
+
+        video: ""
 
     };
+
+}
+
+    const gallery = [];
+
+for(let i = 0; i < galleryFiles.length; i++){
+
+    gallery.push(
+        URL.createObjectURL(galleryFiles[i])
+    );
+
+}
+
+if(gallery.length === 0){
+
+    product.gallery = currentEditingGallery;
+
+}else{
+
+    product.gallery = gallery;
+
+}
+
+if(videoFile){
+
+    product.video = URL.createObjectURL(videoFile);
+
+}
 
     if(editingProductId === null){
 
