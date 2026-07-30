@@ -263,51 +263,45 @@ function saveProduct(image){
 
     };
 
-}
-
     const gallery = [];
 
-for(let i = 0; i < galleryFiles.length; i++){
+    for(let i = 0; i < galleryFiles.length; i++){
 
-    gallery.push(
-        URL.createObjectURL(galleryFiles[i])
-    );
+        gallery.push(
+            URL.createObjectURL(galleryFiles[i])
+        );
 
-}
+    }
 
-if(gallery.length === 0){
+    if(gallery.length > 0){
 
-    product.gallery = currentEditingGallery;
+        product.gallery = gallery;
 
-}else{
+    }else{
 
-    product.gallery = gallery;
+        product.gallery = currentEditingGallery;
 
-}
+    }
 
-if(videoFile){
+    if(videoFile){
 
-    product.video = URL.createObjectURL(videoFile);
+        product.video = URL.createObjectURL(videoFile);
 
-}
+    }else{
+
+        product.video = currentEditingVideo;
+
+    }
 
     if(editingProductId === null){
 
         products.push(product);
 
-    }
-
-    else{
+    }else{
 
         products = products.map(function(item){
 
-            if(item.id === editingProductId){
-
-                return product;
-
-            }
-
-            return item;
+            return item.id === editingProductId ? product : item;
 
         });
 
@@ -316,6 +310,10 @@ if(videoFile){
     editingProductId = null;
 
     currentEditingImage = "";
+
+    currentEditingGallery = [];
+
+    currentEditingVideo = "";
 
     localStorage.setItem(
         "products",
