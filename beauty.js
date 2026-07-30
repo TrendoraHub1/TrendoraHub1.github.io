@@ -18,6 +18,8 @@ function initializeBeautyPage(){
 
     setupNewsletter();
 
+    setupLoadMoreButton();
+
 }
 
 
@@ -416,3 +418,76 @@ window.addEventListener("load",()=>{
 
 
 });
+
+// =====================================
+// Load More Button
+// =====================================
+
+function setupLoadMoreButton(){
+
+    const loadBtn=document.querySelector(".load-btn");
+
+    if(!loadBtn) return;
+
+    loadBtn.addEventListener("click",()=>{
+
+        loadBtn.innerHTML="More Products Coming Soon...";
+
+        loadBtn.disabled=true;
+
+        loadBtn.style.opacity="0.7";
+
+    });
+
+}
+
+// =====================================
+// Load Beauty Products
+// =====================================
+
+function loadBeautyProducts(){
+
+    const productGrid=document.querySelector(".product-grid");
+
+    if(!productGrid) return;
+
+    const products=
+    JSON.parse(localStorage.getItem("products")) || [];
+
+    const beautyProducts=products.filter(function(product){
+
+        return product.mainCategory==="Beauty";
+
+    });
+
+    productGrid.innerHTML="";
+
+    beautyProducts.forEach(function(product){
+
+        productGrid.innerHTML+=`
+
+        <div class="product-card">
+
+            <img src="${product.image}" alt="${product.name}">
+
+            <h3>${product.name}</h3>
+
+            <p>${product.description}</p>
+
+            <a
+            href="store-system/store-product.html?id=${product.id}"
+            class="buy-btn">
+
+            View Product
+
+            </a>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+loadBeautyProducts();
