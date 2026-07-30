@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 /* ==========================================
-   Load Product From LocalStorage
+   Load Product
 ========================================== */
 
 
@@ -33,15 +33,11 @@ function loadProduct(){
 
     if(!productId){
 
-
         console.log("No Product ID Found");
-
 
         return;
 
-
     }
-
 
 
 
@@ -50,36 +46,26 @@ function loadProduct(){
 
 
 
-
     const product =
     products.find(function(item){
 
-
         return item.id === productId;
-
 
     });
 
 
 
-
-
     if(!product){
-
 
         console.log("Product Not Found");
 
-
         return;
-
 
     }
 
 
 
-
     displayProduct(product);
-
 
 
 }
@@ -87,7 +73,7 @@ function loadProduct(){
 
 
 /* ==========================================
-   Display Product Information
+   Display Product
 ========================================== */
 
 
@@ -98,25 +84,20 @@ function displayProduct(product){
     document.getElementById("product-title");
 
 
-
     const category =
     document.getElementById("product-category");
-
 
 
     const description =
     document.getElementById("product-description");
 
 
-
     const price =
     document.getElementById("product-price");
 
 
-
     const image =
     document.getElementById("main-product-image");
-
 
 
     const button =
@@ -124,81 +105,68 @@ function displayProduct(product){
 
 
 
-
-
     if(title){
 
-        title.innerText =
-        product.name;
+        title.innerText = product.name;
 
     }
-
 
 
 
     if(category){
 
-        category.innerText =
-        product.mainCategory;
+        category.innerText = product.mainCategory;
 
     }
-
 
 
 
     if(description){
 
-        description.innerText =
-        product.description;
+        description.innerText = product.description;
 
     }
-
 
 
 
     if(price){
 
-        price.innerText =
-        product.price;
+        price.innerText = product.price;
 
     }
-
 
 
 
     if(image){
 
-        image.src =
-        product.image;
+        image.src = product.image;
 
     }
-
 
 
 
     if(button){
 
-        button.href =
-        product.affiliate;
+        button.href = product.affiliate;
 
     }
 
 
 
-
     loadGallery(product);
+
+    loadVideo(product);
 
     loadFeatures(product);
 
     loadExtraInformation(product);
 
 
-
 }
 
-/* ==========================================
-   Product Gallery
-========================================== */
+// ==========================================
+// Product Gallery
+// ==========================================
 
 
 function loadGallery(product){
@@ -217,73 +185,93 @@ function loadGallery(product){
 
 
 
-    if(product.gallery && product.gallery.length > 0){
+    galleryImages.forEach(function(img,index){
 
 
-
-        galleryImages.forEach(function(img,index){
-
-
-
-            if(product.gallery[index]){
-
-
-                img.src =
-                product.gallery[index];
-
-
-            }
-
-
-            else{
-
-
-                img.src =
-                product.image;
-
-
-            }
-
-
-
-        });
-
-
-
-    }
-
-
-
-    else{
-
-
-
-        galleryImages.forEach(function(img){
-
+        if(product.gallery && product.gallery[index]){
 
 
             img.src =
-            product.image;
+            product.gallery[index];
 
 
+            img.style.display =
+            "block";
 
-        });
+
+        }
+
+        else{
 
 
+            img.removeAttribute("src");
 
-    }
 
+            img.style.display =
+            "none";
+
+
+        }
+
+
+    });
 
 
 }
 
 
 
+// ==========================================
+// Product Video
+// ==========================================
 
 
-/* ==========================================
-   Product Features
-========================================== */
+function loadVideo(product){
+
+
+    const video =
+    document.getElementById("product-video");
+
+
+
+    if(!video){
+
+        return;
+
+    }
+
+
+
+    if(product.video){
+
+
+        video.src =
+        product.video;
+
+
+        video.style.display =
+        "block";
+
+
+    }
+
+    else{
+
+
+        video.style.display =
+        "none";
+
+
+    }
+
+
+}
+
+
+
+// ==========================================
+// Product Features
+// ==========================================
 
 
 function loadFeatures(product){
@@ -308,19 +296,13 @@ function loadFeatures(product){
 
     const features = [
 
-
         "Premium Quality Product",
-
 
         "Trending Product",
 
-
         "Fast Shipping Available",
 
-
         "Carefully Selected For Customers"
-
-
 
     ];
 
@@ -329,38 +311,28 @@ function loadFeatures(product){
     features.forEach(function(feature){
 
 
-
         const li =
         document.createElement("li");
-
 
 
         li.innerText =
         feature;
 
 
-
         featureList.appendChild(li);
-
 
 
     });
 
 
-
 }
 
-
-
-
-
-/* ==========================================
-   Extra Product Information
-========================================== */
+// ==========================================
+// Extra Information
+// ==========================================
 
 
 function loadExtraInformation(product){
-
 
 
     const extra =
@@ -380,12 +352,13 @@ function loadExtraInformation(product){
     product.description;
 
 
-
 }
 
-/* ==========================================
-   Image Error Handling
-========================================== */
+
+
+// ==========================================
+// Main Image Error Handling
+// ==========================================
 
 
 const mainImage =
@@ -399,8 +372,8 @@ if(mainImage){
     mainImage.addEventListener("error", function(){
 
 
-        mainImage.src =
-        "../assets/images/image-not-found.png";
+        mainImage.style.display =
+        "none";
 
 
     });
@@ -410,99 +383,27 @@ if(mainImage){
 
 
 
-
-
-/* ==========================================
-   Lazy Loading Images
-========================================== */
+// ==========================================
+// Lazy Loading
+// ==========================================
 
 
 document.querySelectorAll("img").forEach(function(img){
 
 
-    img.loading = "lazy";
+    img.loading =
+    "lazy";
 
 
 });
 
 
 
-
-
-/* ==========================================
-   Page Animation
-========================================== */
-
-
-window.addEventListener("load", function(){
-
-
-    document.body.style.opacity = "0";
-
-
-    document.body.style.transition =
-    "opacity .5s ease";
-
-
-
-    setTimeout(function(){
-
-
-        document.body.style.opacity = "1";
-
-
-    },100);
-
-
-
-});
-
-
-
-
-
-/* ==========================================
-   Buy Button Effect
-========================================== */
-
-
-const buyButton =
-document.querySelector(".buy-button");
-
-
-
-if(buyButton){
-
-
-    buyButton.addEventListener("mouseenter", function(){
-
-
-        buyButton.style.transform =
-        "scale(1.05)";
-
-
-    });
-
-
-
-    buyButton.addEventListener("mouseleave", function(){
-
-
-        buyButton.style.transform =
-        "scale(1)";
-
-
-    });
-
-
-
-}
-
-/* ==========================================
-   Console Message
-========================================== */
+// ==========================================
+// Console
+// ==========================================
 
 
 console.log(
-    "TrendoraHub Store Product Loaded Successfully"
+"TrendoraHub Store Product Loaded Successfully"
 );
