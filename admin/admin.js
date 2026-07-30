@@ -18,7 +18,12 @@ const editBtn = document.getElementById("edit-btn");
 // =====================================
 
 let editingProductId = null;
+
 let currentEditingImage = "";
+
+let currentEditingGallery = [];
+
+let currentEditingVideo = "";
 
 // =====================================
 // Load Products
