@@ -188,8 +188,6 @@ function displayProduct(product){
 
     loadGallery(product);
 
-    loadVideo(product);
-
     loadFeatures(product);
 
     loadExtraInformation(product);
@@ -282,71 +280,6 @@ function loadGallery(product){
 
 
 
-
-/* ==========================================
-   Product Video
-========================================== */
-
-
-function loadVideo(product){
-
-
-
-    const video =
-    document.getElementById("product-video");
-
-
-
-    if(!video){
-
-        return;
-
-    }
-
-
-
-
-    if(product.video){
-
-
-
-        const source =
-        video.querySelector("source");
-
-
-
-        if(source){
-
-
-            source.src =
-            product.video;
-
-
-            video.load();
-
-
-        }
-
-
-
-    }
-
-
-
-    else{
-
-
-
-        video.style.display =
-        "none";
-
-
-
-    }
-
-
-
-}
 
 /* ==========================================
    Product Features
