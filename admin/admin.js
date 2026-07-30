@@ -162,32 +162,25 @@ productForm.addEventListener("submit", function(event){
     event.preventDefault();
 
 
+   const imageFile = document.getElementById("product-images").files[0];
 
-    const product = {
+const product = {
 
+    id: document.getElementById("product-id").value,
 
-        id: document.getElementById("product-id").value,
+    name: document.querySelectorAll('input[type="text"]')[0].value,
 
+    price: document.querySelectorAll('input[type="text"]')[1].value,
 
-        name: document.querySelectorAll('input[type="text"]')[0].value,
+    affiliate: document.querySelector('input[type="url"]').value,
 
+    mainCategory: document.querySelectorAll("select")[0].value,
 
-        price: document.querySelectorAll('input[type="text"]')[1].value,
+    collectionCategory: document.querySelectorAll("select")[1].value,
 
+    description: document.querySelector("textarea").value
 
-        affiliate: document.querySelector('input[type="url"]').value,
-
-
-        mainCategory: document.querySelectorAll("select")[0].value,
-
-
-        collectionCategory: document.querySelectorAll("select")[1].value,
-
-
-        description: document.querySelector("textarea").value
-
-
-    };
+};
 
 
 
