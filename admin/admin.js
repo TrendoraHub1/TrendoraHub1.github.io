@@ -168,8 +168,6 @@ const reader = new FileReader();
 
 const product = {
 
-...
-
     id: document.getElementById("product-id").value,
 
     name: document.querySelectorAll('input[type="text"]')[0].value,
