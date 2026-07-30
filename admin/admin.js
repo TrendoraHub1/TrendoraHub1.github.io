@@ -166,30 +166,37 @@ productForm.addEventListener("submit", function(event){
 
 const reader = new FileReader();
 
-const product = {
+if(imageFile){
 
-    id: document.getElementById("product-id").value,
+    reader.onload = function(){
 
-    name: document.querySelectorAll('input[type="text"]')[0].value,
+        const product = {
 
-    price: document.querySelectorAll('input[type="text"]')[1].value,
+            id: document.getElementById("product-id").value,
 
-    affiliate: document.querySelector('input[type="url"]').value,
+            name: document.querySelectorAll('input[type="text"]')[0].value,
 
-    mainCategory: document.querySelectorAll("select")[0].value,
+            price: document.querySelectorAll('input[type="text"]')[1].value,
 
-    collectionCategory: document.querySelectorAll("select")[1].value,
+            affiliate: document.querySelector('input[type="url"]').value,
 
-    description: document.querySelector("textarea").value,
+            mainCategory: document.querySelectorAll("select")[0].value,
 
-    image: imageFile ? URL.createObjectURL(imageFile) : ""
+            collectionCategory: document.querySelectorAll("select")[1].value,
 
-};
+            description: document.querySelector("textarea").value,
 
+            image: reader.result
 
-    console.log(product);
+        };
 
+        console.log(product);
 
+    };
+
+    reader.readAsDataURL(imageFile);
+
+}
 
     // Local Storage me save karna
 
