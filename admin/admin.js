@@ -172,6 +172,8 @@ productForm.addEventListener("submit", function (event) {
 
     const imageFile = document.getElementById("product-images").files[0];
 
+    const hasNewImage = imageFile !== undefined && imageFile !== null;
+
     if (!imageFile) {
 
         alert("Please select a product image.");
