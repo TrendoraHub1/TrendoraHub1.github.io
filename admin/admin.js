@@ -123,17 +123,17 @@ editingProductId = productId;
 
 function createProductCard(product){
 
-    return `
+   return `
 
 <div class="product-preview-card">
 
-
-<input 
-type="checkbox" 
+<input
+type="checkbox"
 class="product-checkbox"
 data-id="${product.id}"
 >
 
+<img src="${product.image}" alt="${product.name}">
 
 <h3>${product.name}</h3>
 
