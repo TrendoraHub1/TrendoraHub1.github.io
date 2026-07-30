@@ -180,8 +180,6 @@ const product = {
 
     description: document.querySelector("textarea").value,
 
-image: ""
-
     image: imageFile ? URL.createObjectURL(imageFile) : ""
 
 };
