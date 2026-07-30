@@ -6,11 +6,18 @@ const productForm = document.querySelector(".product-form");
 
 const productList = document.getElementById("product-list");
 
+const deleteBtn = document.getElementById("delete-btn");
+
+const editBtn = document.getElementById("edit-btn");
+
 let editingProductId = null;
 
+let currentEditingImage = "";
 
-// Page load hone par saved products show karna
-let savedProducts = JSON.parse(localStorage.getItem("products")) || [];
+// Page Load
+
+let savedProducts =
+JSON.parse(localStorage.getItem("products")) || [];
 
 savedProducts.forEach(function(product){
 
@@ -115,7 +122,7 @@ editingProductId = productId;
 
     document.querySelector("textarea").value = product.description;
 
-
+    currentEditingImage = product.image;
 
 });
 
@@ -155,20 +162,27 @@ data-id="${product.id}"
 
 
 
+// =====================================
 // Publish Product
+// =====================================
 
-productForm.addEventListener("submit", function(event){
+productForm.addEventListener("submit", function (event) {
 
     event.preventDefault();
 
+    const imageFile = document.getElementById("product-images").files[0];
 
-   const imageFile = document.getElementById("product-images").files[0];
+    if (!imageFile) {
 
-const reader = new FileReader();
+        alert("Please select a product image.");
 
-if(imageFile){
+        return;
 
-    reader.onload = function(){
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function () {
 
         const product = {
 
@@ -190,13 +204,47 @@ if(imageFile){
 
         };
 
-        console.log(product);
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+
+        if (editingProductId === null) {
+
+            products.push(product);
+
+        } else {
+
+            products = products.map(function (item) {
+
+                if (item.id === editingProductId) {
+
+                    return product;
+
+                }
+
+                return item;
+
+            });
+
+            editingProductId = null;
+
+        }
+
+        localStorage.setItem("products", JSON.stringify(products));
+
+        productList.innerHTML = "";
+
+        products.forEach(function (item) {
+
+            productList.innerHTML += createProductCard(item);
+
+        });
+
+        productForm.reset();
 
     };
 
     reader.readAsDataURL(imageFile);
 
-}
+});
 
     // Local Storage me save karna
 
