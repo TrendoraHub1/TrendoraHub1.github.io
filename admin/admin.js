@@ -178,10 +178,11 @@ const product = {
 
     collectionCategory: document.querySelectorAll("select")[1].value,
 
-    description: document.querySelector("textarea").value
+    description: document.querySelector("textarea").value,
+
+    image: imageFile ? URL.createObjectURL(imageFile) : ""
 
 };
-
 
 
     console.log(product);
