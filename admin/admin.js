@@ -6,10 +6,6 @@ const productForm = document.querySelector(".product-form");
 
 const productList = document.getElementById("product-list");
 
-const deleteBtn = document.getElementById("delete-btn");
-
-const editBtn = document.getElementById("edit-btn");
-
 let editingProductId = null;
 
 let currentEditingImage = "";
@@ -303,54 +299,5 @@ productForm.addEventListener("submit", function (event) {
 }
 
     reader.readAsDataURL(imageFile);
-
-});
-
-    // Local Storage me save karna
-
-let products = JSON.parse(localStorage.getItem("products")) || [];
-
-
-if (editingProductId === null) {
-
-    // New Product
-
-    products.push(product);
-
-} else {
-
-    // Update Existing Product
-
-    products = products.map(function(item){
-
-        if(item.id === editingProductId){
-
-            return product;
-
-        }
-
-        return item;
-
-    });
-
-    editingProductId = null;
-
-}
-
-
-localStorage.setItem("products", JSON.stringify(products));
-
-
-// Product List Refresh
-
-productList.innerHTML = "";
-
-products.forEach(function(product){
-
-    productList.innerHTML += createProductCard(product);
-
-});
-
-
 
 });
