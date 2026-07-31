@@ -784,3 +784,44 @@ nav a.active{
 }
 
 }
+
+@media(max-width:768px){
+
+.product-grid{
+    display:flex;
+    overflow-x:auto;
+    gap:15px;
+    scroll-snap-type:x mandatory;
+    padding-bottom:15px;
+}
+
+.product-card{
+    min-width:220px;
+    flex:0 0 auto;
+    scroll-snap-align:start;
+}
+
+.product-card:last-child{
+    grid-column:auto;
+}
+
+.product-card img{
+    height:180px;
+}
+
+.product-card h3{
+    font-size:18px;
+    margin:15px;
+}
+
+.product-card p{
+    font-size:14px;
+    margin:0 15px 15px;
+}
+
+.buy-btn{
+    padding:10px 20px;
+    font-size:14px;
+}
+
+}
