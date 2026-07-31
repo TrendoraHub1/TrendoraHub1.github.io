@@ -761,7 +761,7 @@ nav a.active{
 @media (max-width:768px){
 
 .hero{
-    min-height:65vh;
+    min-height:60vh;
     padding:50px 20px;
 
     background-image:url("assets/images/hero-mobile.png");
