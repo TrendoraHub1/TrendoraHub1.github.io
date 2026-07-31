@@ -763,6 +763,11 @@ nav a.active{
 .hero{
     min-height:65vh;
     padding:50px 20px;
+
+    background-image:url("assets/images/hero-mobile.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
 }
 
 .hero-content{
