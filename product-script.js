@@ -1,322 +1,131 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
+/* =====================================
+   TrendoraHub Collection Category Script
+===================================== */
 
-    initializePage();
+const featuredGrid = document.querySelector(".featured-grid");
+const loadMoreBtn = document.querySelector(".load-btn");
 
-});
+const allProducts =
+JSON.parse(localStorage.getItem("products")) || [];
 
-function initializePage(){
+let filteredProducts = [];
+let visibleProducts = 6;
 
-    setupSmoothScrolling();
+/* =====================================
+   Collection Category Detection
+===================================== */
 
-    setupStickyHeader();
+const pageCollectionMap = {
 
-    setupRevealAnimation();
+    "smart-lifestyle-gadgets.html":
+    "Smart Lifestyle Gadgets",
 
-    setupBackToTop();
+    "mens-fashion.html":
+    "Premium Men's Fashion",
 
-}
+    "womens-fashion.html":
+    "Premium Women's Fashion",
 
-/* ===========================
-   Smooth Scrolling
-=========================== */
+    "smart-home.html":
+    "Smart Home Essentials",
 
-function setupSmoothScrolling(){
+    "beauty-lifestyle.html":
+    "Beauty & Lifestyle",
 
-    const links = document.querySelectorAll('a[href^="#"]');
+    "travel-outdoor.html":
+    "Travel Outdoor Essentials",
 
-    links.forEach(link=>{
+    "smart-accessories.html":
+    "Lifestyle Essentials"
 
-        link.addEventListener("click",function(e){
+};
 
-            const target=document.querySelector(this.getAttribute("href"));
+const currentPage =
+window.location.pathname.split("/").pop();
 
-            if(!target) return;
+const currentCollection =
+pageCollectionMap[currentPage] || "";
 
-            e.preventDefault();
+filteredProducts = allProducts.filter(product =>
 
-            target.scrollIntoView({
-
-                behavior:"smooth",
-
-                block:"start"
-
-            });
-
-        });
-
-    });
-
-}
-
-/* ===========================
-   Sticky Header
-=========================== */
-
-function setupStickyHeader(){
-
-    const header=document.querySelector("header");
-
-    if(!header) return;
-
-    window.addEventListener("scroll",()=>{
-
-        if(window.scrollY>80){
-
-            header.style.background="rgba(17,17,17,.96)";
-
-            header.style.backdropFilter="blur(12px)";
-
-            header.style.boxShadow="0 10px 30px rgba(0,0,0,.25)";
-
-        }
-
-        else{
-
-            header.style.background="#111";
-
-            header.style.backdropFilter="none";
-
-            header.style.boxShadow="0 10px 25px rgba(0,0,0,.15)";
-
-        }
-
-    });
-
-}
-
-/* ===========================
-   Reveal Animation
-=========================== */
-
-function setupRevealAnimation(){
-
-    const elements=document.querySelectorAll(
-
-        ".featured-card,.why-card,.related-card,.intro-content,.product-hero-content"
-
-    );
-
-    const observer=new IntersectionObserver((entries)=>{
-
-        entries.forEach(entry=>{
-
-            if(entry.isIntersecting){
-
-                entry.target.style.opacity="1";
-
-                entry.target.style.transform="translateY(0)";
-
-            }
-
-        });
-
-    },{
-
-        threshold:.15
-
-    });
-
-    elements.forEach(el=>{
-
-        el.style.opacity="0";
-
-        el.style.transform="translateY(40px)";
-
-        el.style.transition="all .8s ease";
-
-        observer.observe(el);
-
-    });
-
-}
-/* ===========================
-   Back To Top Button
-=========================== */
-
-function setupBackToTop(){
-
-    const button = document.createElement("button");
-
-    button.id = "backToTop";
-
-    button.innerHTML = "↑";
-
-    document.body.appendChild(button);
-
-    button.style.position = "fixed";
-    button.style.right = "25px";
-    button.style.bottom = "25px";
-    button.style.width = "50px";
-    button.style.height = "50px";
-    button.style.border = "none";
-    button.style.borderRadius = "50%";
-    button.style.background = "#00c8ff";
-    button.style.color = "#fff";
-    button.style.fontSize = "22px";
-    button.style.cursor = "pointer";
-    button.style.display = "none";
-    button.style.boxShadow = "0 10px 25px rgba(0,0,0,.20)";
-    button.style.transition = ".3s";
-
-    window.addEventListener("scroll",()=>{
-
-        if(window.scrollY > 400){
-
-            button.style.display = "block";
-
-        }else{
-
-            button.style.display = "none";
-
-        }
-
-    });
-
-    button.addEventListener("click",()=>{
-
-        window.scrollTo({
-
-            top:0,
-
-            behavior:"smooth"
-
-        });
-
-    });
-
-}
-
-/* ===========================
-   Card Hover Animation
-=========================== */
-
-const cards = document.querySelectorAll(
-
-    ".featured-card,.why-card,.related-card"
+    product.collectionCategory === currentCollection
 
 );
 
-cards.forEach(card=>{
+/* =====================================
+   Render Products
+===================================== */
 
-    card.addEventListener("mouseenter",()=>{
+function renderProducts() {
 
-        card.style.transform="translateY(-10px)";
+    if (!featuredGrid) return;
+
+    featuredGrid.innerHTML = "";
+
+    const productsToShow = filteredProducts.slice(0, visibleProducts);
+
+    productsToShow.forEach(product => {
+
+        featuredGrid.innerHTML += `
+
+        <div class="featured-card">
+
+            <img src="${product.image}" alt="${product.name}">
+
+            <div class="featured-content">
+
+                <h3>${product.name}</h3>
+
+                <p>${product.description}</p>
+
+                <a href="store-product.html?id=${product.id}" class="hero-btn">
+                    View Product
+                </a>
+
+            </div>
+
+        </div>
+
+        `;
 
     });
 
-    card.addEventListener("mouseleave",()=>{
+    if (loadMoreBtn) {
 
-        card.style.transform="translateY(0)";
+        if (visibleProducts >= filteredProducts.length) {
 
-    });
+            loadMoreBtn.style.display = "none";
 
-});
+        } else {
 
-/* ===========================
-   Hero Button Animation
-=========================== */
+            loadMoreBtn.style.display = "inline-block";
 
-const heroButton = document.querySelector(".hero-btn");
+        }
 
-if(heroButton){
+    }
 
-    heroButton.addEventListener("mouseenter",()=>{
+}
 
-        heroButton.style.transform="scale(1.05)";
+/* =====================================
+   Load More
+===================================== */
 
-    });
+if (loadMoreBtn) {
 
-    heroButton.addEventListener("mouseleave",()=>{
+    loadMoreBtn.addEventListener("click", () => {
 
-        heroButton.style.transform="scale(1)";
+        visibleProducts += 6;
+
+        renderProducts();
 
     });
 
 }
-/* ===========================
-   Active Navigation
-=========================== */
 
-function setupActiveNavigation(){
+/* =====================================
+   Initial Load
+===================================== */
 
-    const navLinks = document.querySelectorAll("nav a");
-
-    navLinks.forEach(link=>{
-
-        link.addEventListener("click",()=>{
-
-            navLinks.forEach(item=>{
-
-                item.classList.remove("active");
-
-            });
-
-            link.classList.add("active");
-
-        });
-
-    });
-
-}
-
-setupActiveNavigation();
-
-/* ===========================
-   Scroll Progress Bar
-=========================== */
-
-const progressBar = document.createElement("div");
-
-progressBar.id = "scroll-progress";
-
-progressBar.style.position = "fixed";
-progressBar.style.top = "0";
-progressBar.style.left = "0";
-progressBar.style.height = "4px";
-progressBar.style.width = "0%";
-progressBar.style.background = "#00c8ff";
-progressBar.style.zIndex = "9999";
-
-document.body.appendChild(progressBar);
-
-window.addEventListener("scroll",()=>{
-
-    const scrollTop = document.documentElement.scrollTop;
-
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-
-    const progress = (scrollTop / scrollHeight) * 100;
-
-    progressBar.style.width = progress + "%";
-
-});
-
-/* ===========================
-   Page Loading Animation
-=========================== */
-
-window.addEventListener("load",()=>{
-
-    document.body.style.opacity = "0";
-
-    document.body.style.transition = "opacity .6s ease";
-
-    setTimeout(()=>{
-
-        document.body.style.opacity = "1";
-
-    },100);
-
-});
-
-/* ===========================
-   Console Message
-=========================== */
-
-console.log("TrendoraHub Product Page Loaded Successfully");
-
-/* ===========================
-   End Of File
-=========================== */
+renderProducts();
