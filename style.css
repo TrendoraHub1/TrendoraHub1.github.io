@@ -796,11 +796,11 @@ nav a.active{
 }
 
 .product-card{
-    width:170px;
-    min-width:170px;
-    height:230px;
-    flex:0 0 auto;
-    scroll-snap-align:start;
+    width:100%;
+    min-width:100%;
+    aspect-ratio:1 / 1;
+    flex:0 0 100%;
+    scroll-snap-align:center;
 }
 
 .product-card:last-child{
@@ -808,7 +808,7 @@ nav a.active{
 }
 
 .product-card img{
-    height:120px;
+    height:55%;
     object-fit:cover;
 }
 
@@ -823,8 +823,9 @@ nav a.active{
 }
 
 .buy-btn{
-    padding:10px 20px;
-    font-size:14px;
+    padding:8px 14px;
+    font-size:12px;
+    margin-bottom:10px;
 }
 
 }
