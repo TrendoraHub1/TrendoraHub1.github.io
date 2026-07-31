@@ -40,8 +40,16 @@ collectionHeroImages[currentFile];
 
 if(heroImage){
 
-    document.querySelector(".product-hero").style.backgroundImage =
-    `url('${heroImage}')`;
+    const heroSection =
+    document.querySelector(".product-hero");
+
+
+    if(heroSection){
+
+        heroSection.style.backgroundImage =
+        `url('${heroImage}')`;
+
+    }
 
 }
 
