@@ -19,7 +19,7 @@ let visibleProducts = 6;
 
 const pageCollectionMap = {
 
-    "smart-lifestyle-gadgets.html":
+    "smart-lifestyle.html":
     "Smart Lifestyle Gadgets",
 
     "mens-fashion.html":
