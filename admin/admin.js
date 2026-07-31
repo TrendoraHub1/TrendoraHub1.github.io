@@ -67,7 +67,7 @@ function renderProducts(){
 
     productList.innerHTML = "";
 
-    products.forEach(product => {
+    [...products].reverse().forEach(product => {
 
         productList.innerHTML += `
 
