@@ -285,13 +285,9 @@ nav a:hover{
 }
 
 .featured-grid{
-
     display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
-    gap:35px;
-
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
 }
 
 .featured-card{
@@ -626,13 +622,16 @@ section{
 }
 
 .featured-grid,
-
 .why-grid,
-
 .related-grid{
 
     grid-template-columns:1fr;
 
+}
+
+.featured-card{
+    width:100%;
+    min-width:0;
 }
 
 .featured-card img{
@@ -775,4 +774,8 @@ html{
 
     background:#00c8ff;
 
+}
+
+body{
+    overflow-x:hidden;
 }
