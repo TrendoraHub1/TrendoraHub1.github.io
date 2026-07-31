@@ -9,7 +9,6 @@ const productList = document.getElementById("product-list");
 
 const deleteBtn = document.getElementById("delete-btn");
 const editBtn = document.getElementById("edit-btn");
-const productListBtn = document.getElementById("product-list-btn");
 
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
@@ -102,18 +101,6 @@ function renderProducts(){
     });
 
 }
-
-
-// =====================================
-// Product List Button
-// =====================================
-
-productListBtn.addEventListener("click", function(){
-
-    renderProducts();
-
-});
-
 
 // =====================================
 // File Reader
