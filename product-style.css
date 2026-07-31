@@ -776,35 +776,3 @@ html{
     background:#00c8ff;
 
 }
-
-/* ====================================
-   MOBILE RELATED CATEGORIES FIX
-==================================== */
-
-@media (max-width:768px){
-
-.related-grid{
-
-    grid-template-columns:1fr;
-
-    gap:20px;
-
-}
-
-.related-card{
-
-    width:100%;
-
-    max-width:100%;
-
-}
-
-.related-card img{
-
-    width:100%;
-
-    height:auto;
-
-}
-
-}
