@@ -80,8 +80,8 @@ function renderProducts() {
 
                 <p>${product.description}</p>
 
-                <a href="store-product.html?id=${product.id}" class="hero-btn">
-                    View Product
+                <a href="store-system/store-product.html?id=${product.id}" class="hero-btn">
+                  View Product
                 </a>
 
             </div>
