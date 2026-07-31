@@ -624,16 +624,13 @@ section{
 .featured-grid,
 .why-grid,
 .related-grid{
-
     grid-template-columns:1fr;
-
 }
 
 .featured-card{
     width:100%;
     min-width:0;
 }
-
 .featured-card img{
 
     height:240px;
