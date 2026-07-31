@@ -796,7 +796,9 @@ nav a.active{
 }
 
 .product-card{
-    min-width:220px;
+    width:170px;
+    min-width:170px;
+    height:230px;
     flex:0 0 auto;
     scroll-snap-align:start;
 }
@@ -806,12 +808,13 @@ nav a.active{
 }
 
 .product-card img{
-    height:180px;
+    height:120px;
+    object-fit:cover;
 }
 
 .product-card h3{
-    font-size:18px;
-    margin:15px;
+    font-size:15px;
+    margin:10px;
 }
 
 .product-card p{
