@@ -1,5 +1,50 @@
 "use strict";
 
+// =====================================
+// Collection Hero Image System
+// =====================================
+
+const collectionHeroImages = {
+
+    "smart-lifestyle.html":
+    "assets/images/product-1.png",
+
+    "mens-fashion.html":
+    "assets/images/product-2.png",
+
+    "womens-fashion.html":
+    "assets/images/product-3.png",
+
+    "smart-home.html":
+    "assets/images/product-4.png",
+
+    "beauty-lifestyle.html":
+    "assets/images/product-5.png",
+
+    "travel-outdoor.html":
+    "assets/images/product-6.png",
+
+    "smart-accessories.html":
+    "assets/images/product-7.png"
+
+};
+
+
+const currentFile =
+window.location.pathname.split("/").pop();
+
+
+const heroImage =
+collectionHeroImages[currentFile];
+
+
+if(heroImage){
+
+    document.querySelector(".product-hero").style.backgroundImage =
+    `url('${heroImage}')`;
+
+}
+
 /* =====================================
    TrendoraHub Collection Category Script
 ===================================== */
