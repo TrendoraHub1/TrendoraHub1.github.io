@@ -755,3 +755,19 @@ nav a.active{
     background:#222;
     transform:translateY(-3px);
 }
+
+/* Mobile Hero Image */
+
+@media (max-width:768px){
+
+    .hero{
+
+        background-image:url("assets/images/hero-mobile.png");
+
+        background-size:cover;
+
+        background-position:center;
+
+    }
+
+}
