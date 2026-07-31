@@ -80,8 +80,6 @@ function renderProducts() {
 
                 <p>${product.description}</p>
 
-                console.log("VIEW LINK:", "store-system/store-product.html?id=" + product.id);
-
                 <a href="store-system/store-product.html?id=${product.id}" class="hero-btn">
                   View Product
                 </a>
