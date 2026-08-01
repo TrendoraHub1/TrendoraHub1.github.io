@@ -129,7 +129,7 @@ pageCollectionMap[currentPage] || "";
 
 filteredProducts = allProducts.filter(product =>
 
-    product.collectionCategory === currentCollection
+    product.collection_category === currentCollection
 
 );
 
@@ -149,23 +149,23 @@ function renderProducts() {
 
         featuredGrid.innerHTML += `
 
-        <div class="featured-card">
+       <div class="featured-card">
 
-            <img src="${product.image}" alt="${product.name}">
+    <img src="${product.main_image}" alt="${product.product_name}">
 
-            <div class="featured-content">
+    <div class="featured-content">
 
-                <h3>${product.name}</h3>
+        <h3>${product.product_name}</h3>
 
-                <p>${product.description}</p>
+        <p>${product.description}</p>
 
-                <a href="store-system/store-product.html?id=${product.id}" class="hero-btn">
-                  View Product
-                </a>
+        <a href="store-system/store-product.html?id=${product.product_id}" class="hero-btn">
+            View Product
+        </a>
 
-            </div>
+    </div>
 
-        </div>
+</div>
 
         `;
 
