@@ -306,3 +306,114 @@ productForm.addEventListener("submit", async function (event) {
     );
 
 });
+
+// =====================================
+// Save Product To Supabase
+// =====================================
+
+async function saveProduct(image, gallery, video) {
+
+    const product = {
+
+        id: document.getElementById("product-id").value,
+
+        product_name:
+            document.querySelectorAll('input[type="text"]')[0].value,
+
+        price:
+            document.querySelectorAll('input[type="text"]')[1].value,
+
+        affiliate_link:
+            document.querySelector('input[type="url"]').value,
+
+        main_category:
+            document.querySelectorAll("select")[0].value,
+
+        collection_category:
+            document.querySelectorAll("select")[1].value,
+
+        description:
+            document.querySelector("textarea").value,
+
+        main_image: image,
+
+        gallery_images: gallery,
+
+        product_video: video
+
+    };
+
+
+    let error;
+
+    if (editingProductId === null) {
+
+        ({ error } = await supabaseClient
+            .from("products")
+            .insert(product));
+
+    } else {
+
+        ({ error } = await supabaseClient
+            .from("products")
+            .update(product)
+            .eq("id", editingProductId));
+
+    }
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert("Failed to save product.");
+
+        return;
+
+    }
+
+    alert("Product saved successfully!");
+
+    editingProductId = null;
+
+    currentEditingImage = "";
+
+    currentEditingGallery = [];
+
+    currentEditingVideo = "";
+
+    productForm.reset();
+
+    await loadProducts();
+
+    setNextProductId();
+
+}
+
+
+// =====================================
+// Clear Form
+// =====================================
+
+function clearForm() {
+
+    productForm.reset();
+
+    editingProductId = null;
+
+    currentEditingImage = "";
+
+    currentEditingGallery = [];
+
+    currentEditingVideo = "";
+
+    setNextProductId();
+
+}
+
+
+// =====================================
+// Console
+// =====================================
+
+console.log("TrendoraHub Admin Panel Loaded Successfully");
