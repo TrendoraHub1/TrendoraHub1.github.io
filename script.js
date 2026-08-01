@@ -18,9 +18,15 @@ function setupSmoothScrolling() {
     links.forEach(link => {
         link.addEventListener("click", function (e) {
 
-            const href = this.getAttribute("href");
+           const href = this.getAttribute("href");
 
-if (!href || href === "#") return;
+if (!href || href === "#") {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+    return;
+}
 
 const target = document.querySelector(href);
 
