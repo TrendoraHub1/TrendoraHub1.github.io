@@ -577,10 +577,7 @@ response =
 await supabaseClient
 .from("products")
 .update(product)
-.eq(
-"id",
-editingProductId
-);
+.eq("product_id", editingProductId)
 
 
 
