@@ -850,133 +850,61 @@ alert(
 // Delete Product
 // =====================================
 
-deleteBtn.addEventListener(
-"click",
-async function(){
+deleteBtn.addEventListener("click", async function () {
+
+    const selected =
+    document.querySelectorAll(".product-checkbox:checked");
+
+
+    if(selected.length === 0){
+
+        alert("Select product first.");
+
+        return;
+
+    }
+
+
+    const id =
+    selected[0].dataset.id;
+
+
+    console.log("Deleting ID:", id);
 
 
 
-const selected =
-
-document.querySelectorAll(
-".product-checkbox:checked"
-);
-
-
-
-
-if(selected.length === 0){
-
-
-alert(
-"Select product first."
-);
-
-
-return;
-
-
-}
+    const { error } =
+    await supabaseClient
+    .from("products")
+    .delete()
+    .eq("id", id);
 
 
 
+    if(error){
 
-const ids = [];
+        console.error(
+            "DELETE ERROR:",
+            error
+        );
+
+        alert("Delete failed.");
+
+        return;
+
+    }
 
 
 
-selected.forEach(item=>{
+    alert(
+        "Product deleted successfully!"
+    );
 
 
-ids.push(
-Number(item.dataset.id)
-);
+    await loadProducts();
 
 
 });
-
-
-
-
-
-console.log(
-"DELETE IDS:",
-ids
-);
-
-
-
-
-
-
-const { data, error } =
-
-await supabaseClient
-.from("products")
-.delete()
-.in(
-"id",
-ids
-)
-.select();
-
-
-
-
-
-console.log(
-"DELETE RESPONSE:",
-data
-);
-
-
-
-console.log(
-"DELETE ERROR:",
-error
-);
-
-
-
-
-
-
-if(error){
-
-
-console.error(
-error
-);
-
-
-alert(
-"Delete failed."
-);
-
-
-return;
-
-
-}
-
-
-
-
-
-alert(
-"Product deleted successfully!"
-);
-
-
-
-
-
-await loadProducts();
-
-
-
-});
-
 
 
 
