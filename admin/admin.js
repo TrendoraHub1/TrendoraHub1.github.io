@@ -417,3 +417,213 @@ function clearForm() {
 // =====================================
 
 console.log("TrendoraHub Admin Panel Loaded Successfully");
+
+
+// =====================================
+// Edit Product
+// =====================================
+
+editBtn.addEventListener("click", function () {
+
+    const selected =
+        document.querySelectorAll(".product-checkbox:checked");
+
+
+    if (selected.length !== 1) {
+
+        alert("Select one product.");
+
+        return;
+
+    }
+
+
+    const id =
+        selected[0].dataset.id;
+
+
+    const product =
+        products.find(item => item.id == id);
+
+
+    if (!product) {
+
+        alert("Product not found.");
+
+        return;
+
+    }
+
+
+    editingProductId = product.id;
+
+
+    currentEditingImage =
+        product.main_image || "";
+
+
+    currentEditingGallery =
+        product.gallery_images || [];
+
+
+    currentEditingVideo =
+        product.product_video || "";
+
+
+
+    document.getElementById("product-id").value =
+        product.id;
+
+
+    document.querySelectorAll('input[type="text"]')[0].value =
+        product.product_name;
+
+
+    document.querySelectorAll('input[type="text"]')[1].value =
+        product.price;
+
+
+    document.querySelector('input[type="url"]').value =
+        product.affiliate_link || "";
+
+
+
+    document.querySelectorAll("select")[0].value =
+        product.main_category;
+
+
+
+    document.querySelectorAll("select")[1].value =
+        product.collection_category;
+
+
+
+    document.querySelector("textarea").value =
+        product.description || "";
+
+
+});
+
+
+// =====================================
+// Delete Product From Supabase
+// =====================================
+
+deleteBtn.addEventListener("click", async function () {
+
+
+    const selected =
+        document.querySelectorAll(".product-checkbox:checked");
+
+
+
+    if (selected.length === 0) {
+
+        alert("Select product first.");
+
+        return;
+
+    }
+
+
+
+    const ids = [];
+
+
+    selected.forEach(item => {
+
+        ids.push(item.dataset.id);
+
+    });
+
+
+
+    const { error } =
+        await supabaseClient
+            .from("products")
+            .delete()
+            .in("id", ids);
+
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert("Delete failed.");
+
+        return;
+
+    }
+
+
+
+    alert("Product deleted successfully!");
+
+
+    await loadProducts();
+
+
+});
+
+
+// =====================================
+// Form Reset After Save
+// =====================================
+
+function resetProductForm() {
+
+    productForm.reset();
+
+    editingProductId = null;
+
+    currentEditingImage = "";
+
+    currentEditingGallery = [];
+
+    currentEditingVideo = "";
+
+    setNextProductId();
+
+}
+
+
+// =====================================
+// Cancel Editing When Needed
+// =====================================
+
+function cancelEdit() {
+
+    editingProductId = null;
+
+    currentEditingImage = "";
+
+    currentEditingGallery = [];
+
+    currentEditingVideo = "";
+
+    resetProductForm();
+
+}
+
+
+// =====================================
+// Refresh Products Button Safety
+// =====================================
+
+async function refreshProducts() {
+
+    await loadProducts();
+
+    setNextProductId();
+
+}
+
+
+// =====================================
+// Final Admin Panel Check
+// =====================================
+
+console.log(
+    "TrendoraHub Admin Panel - Supabase Version Loaded Successfully"
+);
