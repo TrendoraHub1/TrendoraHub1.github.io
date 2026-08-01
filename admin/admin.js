@@ -366,6 +366,8 @@ async function saveProduct(image, gallery, video) {
 
         console.error(error);
 
+        console.log("DATABASE ERROR:", error);
+
         alert("Failed to save product.");
 
         return;
