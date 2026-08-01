@@ -113,7 +113,9 @@ function generateProductId(){
 
 
         const number =
-        Number(product.product_code);
+Number(
+    String(product.product_id).replace("PRD","")
+);
 
 
 
@@ -207,10 +209,8 @@ ${product.product_name || ""}
 
 
 <p>
-
-ID:
-${product.id}
-
+Product ID:
+${product.product_id || ""}
 </p>
 
 
@@ -735,6 +735,9 @@ currentEditingImage =
 
 product.main_image || "";
 
+    document.getElementById("product-id").value =
+product.product_id;
+
 
 
 currentEditingGallery =
@@ -748,20 +751,7 @@ currentEditingVideo =
 product.product_video || "";
 
 
-
-
-
-
-document.getElementById(
-"product-id"
-).value =
-
-product.product_code || "";
-
-
-
-
-
+    
 document.querySelectorAll(
 'input[type="text"]'
 )[0].value =
