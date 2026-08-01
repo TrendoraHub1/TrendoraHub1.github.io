@@ -270,13 +270,12 @@ async function uploadFile(bucket,file){
 
 
 
-    const fileName =
+   const safeName = file.name
+    .replace(/[^a-zA-Z0-9.]/g, "-");
 
-    Date.now()
-    +
-    "-"
-    +
-    file.name;
+
+const fileName =
+    Date.now() + "-" + safeName;
 
 
 
