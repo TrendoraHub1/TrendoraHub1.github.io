@@ -493,20 +493,11 @@ video
 
 const product = {
 
-
-product_code:
-
-document.getElementById(
-"product-id"
-).value,
-
-
+product_id:
+document.getElementById("product-id").value,
 
 product_name:
-
-document.querySelectorAll(
-'input[type="text"]'
-)[0].value,
+document.querySelectorAll('input[type="text"]')[0].value,
 
 
 
