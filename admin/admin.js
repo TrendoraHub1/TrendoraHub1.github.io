@@ -112,10 +112,9 @@ function generateProductId(){
     products.forEach(product=>{
 
 
-        const number =
-Number(
-    String(product.product_id).replace("PRD","")
-);
+        const number = product.product_id
+? Number(product.product_id.replace("PRD",""))
+: 0;
 
 
 
