@@ -533,6 +533,7 @@ deleteBtn.addEventListener("click", async function () {
     selected.forEach(item => {
 
         ids.push(item.dataset.id);
+        console.log("DELETE IDS:", ids);
 
     });
 
