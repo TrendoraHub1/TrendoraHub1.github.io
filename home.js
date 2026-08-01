@@ -361,5 +361,3 @@ async function loadHomeProducts() {
 }
 
 loadHomeProducts();
-
-loadHomeProducts();
