@@ -60,8 +60,34 @@ if(heroImage){
 const featuredGrid = document.querySelector(".featured-grid");
 const loadMoreBtn = document.querySelector(".load-btn");
 
-const allProducts =
-JSON.parse(localStorage.getItem("products")) || [];
+let allProducts = [];
+
+async function loadCollectionProducts() {
+
+    const { data, error } = await supabaseClient
+        .from("products")
+        .select("*");
+
+    if (error) {
+
+        console.error(error);
+        return;
+
+    }
+
+    allProducts = data || [];
+
+    filteredProducts = allProducts.filter(product =>
+
+        product.collection_category === currentCollection
+
+    );
+
+    renderProducts();
+
+}
+
+loadCollectionProducts();
 
 let filteredProducts = [];
 let visibleProducts = 6;
