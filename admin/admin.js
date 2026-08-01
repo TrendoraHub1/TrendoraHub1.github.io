@@ -180,3 +180,129 @@ async function uploadImage(file) {
 
 }
 
+// =====================================
+// Upload Gallery To Supabase
+// =====================================
+
+async function uploadGallery(files) {
+
+    const galleryUrls = [];
+
+    for (const file of files) {
+
+        const fileName =
+            Date.now() + "-" + Math.random().toString(36).substring(2) + "-" + file.name;
+
+        const { error } =
+            await supabaseClient.storage
+                .from("product-gallery")
+                .upload(fileName, file);
+
+        if (error) {
+
+            console.error(error);
+
+            alert("Gallery upload failed.");
+
+            continue;
+
+        }
+
+        const { data } =
+            supabaseClient.storage
+                .from("product-gallery")
+                .getPublicUrl(fileName);
+
+        galleryUrls.push(data.publicUrl);
+
+    }
+
+    return galleryUrls;
+
+}
+
+
+// =====================================
+// Upload Video To Supabase
+// =====================================
+
+async function uploadVideo(file) {
+
+    if (!file) return "";
+
+    const fileName =
+        Date.now() + "-" + file.name;
+
+    const { error } =
+        await supabaseClient.storage
+            .from("product-videos")
+            .upload(fileName, file);
+
+    if (error) {
+
+        console.error(error);
+
+        alert("Video upload failed.");
+
+        return "";
+
+    }
+
+    const { data } =
+        supabaseClient.storage
+            .from("product-videos")
+            .getPublicUrl(fileName);
+
+    return data.publicUrl;
+
+}
+
+
+// =====================================
+// Publish Product
+// =====================================
+
+productForm.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+    const imageFile =
+        document.getElementById("product-image").files[0];
+
+    const galleryFiles =
+        document.getElementById("product-gallery").files;
+
+    const videoFile =
+        document.getElementById("product-video").files[0];
+
+    const image =
+        imageFile
+            ? await uploadImage(imageFile)
+            : currentEditingImage;
+
+    let gallery = [];
+
+    if (galleryFiles.length > 0) {
+
+        gallery =
+            await uploadGallery(galleryFiles);
+
+    } else {
+
+        gallery =
+            currentEditingGallery;
+
+    }
+
+    const video =
+        videoFile
+            ? await uploadVideo(videoFile)
+            : currentEditingVideo;
+
+    await saveProduct(
+        image,
+        gallery,
+        video
+    );
+
+});
