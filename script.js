@@ -18,9 +18,13 @@ function setupSmoothScrolling() {
     links.forEach(link => {
         link.addEventListener("click", function (e) {
 
-            const target = document.querySelector(this.getAttribute("href"));
+            const href = this.getAttribute("href");
 
-            if (!target) return;
+if (!href || href === "#") return;
+
+const target = document.querySelector(href);
+
+if (!target) return;
 
             e.preventDefault();
 
