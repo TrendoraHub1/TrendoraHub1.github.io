@@ -468,4 +468,3 @@ async function loadFashionProducts() {
 }
 
 loadFashionProducts();
-loadFashionProducts();
