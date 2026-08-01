@@ -568,7 +568,7 @@ let response;
 
 
 
-if(editingProductId){
+if(editingProductId !== null){
 
 
 
