@@ -730,7 +730,7 @@ return;
 
 
 
-editingProductId = product.id;
+editingProductId = product.product_id;
 
 
 
