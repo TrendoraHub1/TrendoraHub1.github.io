@@ -446,40 +446,43 @@ window.addEventListener("load",()=>{
 // Load Gadget Products
 // =====================================
 
-function loadGadgetProducts(){
+async function loadGadgetProducts() {
 
     const productGrid = document.querySelector(".product-grid");
 
-    if(!productGrid) return;
+    if (!productGrid) return;
 
-    const products =
-    JSON.parse(localStorage.getItem("products")) || [];
+    const { data, error } = await supabaseClient
+        .from("products")
+        .select("*")
+        .eq("main_category", "Gadgets")
+        .order("created_at", { ascending: false });
 
-    const gadgetProducts = products.filter(function(product){
+    if (error) {
 
-        return product.mainCategory === "Gadgets";
+        console.error("Supabase Error:", error);
 
-    });
+        return;
+
+    }
 
     productGrid.innerHTML = "";
 
-    gadgetProducts.forEach(function(product){
+    data.forEach(product => {
 
         productGrid.innerHTML += `
 
         <div class="product-card">
 
-            <img src="${product.image}" alt="${product.name}">
+            <img src="${product.main_image}" alt="${product.product_name}">
 
-            <h3>${product.name}</h3>
+            <h3>${product.product_name}</h3>
 
             <p>${product.description}</p>
 
-            <a
-            href="store-system/store-product.html?id=${product.id}"
-            class="buy-btn">
+            <a href="store-system/store-product.html?id=${product.product_id}" class="buy-btn">
 
-            View Product
+                View Product
 
             </a>
 
