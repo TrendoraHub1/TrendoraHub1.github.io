@@ -2,632 +2,1104 @@
 
 // =====================================
 // TrendoraHub Admin Panel
-// Supabase Version
+// Supabase Final Version
 // Part 1
 // =====================================
 
+
+// =====================================
+// Elements
+// =====================================
+
 const productForm = document.querySelector(".product-form");
+
 const productList = document.getElementById("product-list");
 
 const deleteBtn = document.getElementById("delete-btn");
+
 const editBtn = document.getElementById("edit-btn");
+
+
+// =====================================
+// Variables
+// =====================================
 
 let products = [];
 
 let editingProductId = null;
 
 let currentEditingImage = "";
+
 let currentEditingGallery = [];
+
 let currentEditingVideo = "";
 
 
 // =====================================
-// Start
+// Start Admin Panel
 // =====================================
 
-initializeAdmin();
+document.addEventListener("DOMContentLoaded", () => {
+
+    initializeAdmin();
+
+});
 
 
 // =====================================
 // Initialize
 // =====================================
 
-async function initializeAdmin() {
+async function initializeAdmin(){
 
     await loadProducts();
 
-    setNextProductId();
+    generateProductId();
 
 }
 
 
+
 // =====================================
-// Load Products From Supabase
+// Load Products
 // =====================================
 
-async function loadProducts() {
+async function loadProducts(){
 
-    const { data, error } = await supabaseClient
-        .from("products")
-        .select("*")
-        .order("created_at", { ascending: true });
+    const { data, error } =
+    await supabaseClient
+    .from("products")
+    .select("*")
+    .order("id", { ascending:false });
 
-    if (error) {
 
-        console.error(error);
 
-        alert("Failed to load products.");
+    if(error){
+
+        console.error(
+            "LOAD ERROR:",
+            error
+        );
+
+        alert(
+            "Failed to load products."
+        );
 
         return;
 
     }
 
+
+
     products = data || [];
+
 
     renderProducts();
 
 }
 
 
+
 // =====================================
-// Product ID Generator
+// Generate Product Display ID
 // =====================================
 
-function setNextProductId() {
+function generateProductId(){
 
-    let maxNumber = 0;
+    let max = 0;
 
-    products.forEach(product => {
 
-        const match = String(product.id).match(/(\d+)$/);
+    products.forEach(product=>{
 
-        if (match) {
 
-            const number = parseInt(match[1]);
+        const number =
+        Number(product.product_code);
 
-            if (number > maxNumber) {
 
-                maxNumber = number;
 
-            }
+        if(number > max){
+
+            max = number;
 
         }
 
+
     });
 
-    document.getElementById("product-id").value =
-        "PRD" + String(maxNumber + 1).padStart(3, "0");
+
+
+    const next =
+    max + 1;
+
+
+
+    const id =
+    "PRD" +
+    String(next).padStart(3,"0");
+
+
+
+    const input =
+    document.getElementById("product-id");
+
+
+
+    if(input){
+
+        input.value = id;
+
+    }
+
 
 }
 
 
+
 // =====================================
-// Render Product List
+// Render Products
 // =====================================
 
-function renderProducts() {
+function renderProducts(){
+
+    if(!productList) return;
+
+
 
     productList.innerHTML = "";
 
-    [...products].reverse().forEach(product => {
+
+
+    products.forEach(product=>{
+
 
         productList.innerHTML += `
 
+
 <div class="product-preview-card">
 
+
 <input
+
 type="checkbox"
+
 class="product-checkbox"
+
 data-id="${product.id}"
+
 >
+
 
 <img
+
 src="${product.main_image || ""}"
-alt="${product.product_name}"
+
+alt="product"
+
 >
 
-<h3>${product.product_name}</h3>
 
-<p>ID: ${product.id}</p>
+<h3>
 
-<p>Price: ${product.price}</p>
+${product.product_name || ""}
 
-<p>Category: ${product.main_category}</p>
+</h3>
 
-<p>${product.description}</p>
+
+
+<p>
+
+ID:
+${product.id}
+
+</p>
+
+
+
+<p>
+
+Price:
+${product.price || ""}
+
+</p>
+
+
+
+<p>
+
+Category:
+${product.main_category || ""}
+
+</p>
+
+
+
+<p>
+
+${product.description || ""}
+
+</p>
+
+
 
 </div>
 
+
 `;
+
+
 
     });
 
+
 }
 
 
+
 // =====================================
-// Upload Image To Supabase
+// Upload File Helper
 // =====================================
 
-async function uploadImage(file) {
+async function uploadFile(bucket,file){
 
-    if (!file) return "";
 
-    const fileName =
-        Date.now() + "-" + file.name;
-
-    const { error } =
-        await supabaseClient.storage
-            .from("product-images")
-            .upload(fileName, file);
-
-    if (error) {
-
-        console.error(error);
-
-        alert("Image upload failed.");
+    if(!file){
 
         return "";
 
     }
 
+
+
+    const fileName =
+
+    Date.now()
+    +
+    "-"
+    +
+    file.name;
+
+
+
+    const { error } =
+
+    await supabaseClient
+    .storage
+    .from(bucket)
+    .upload(
+        fileName,
+        file
+    );
+
+
+
+    if(error){
+
+
+        console.error(
+            "UPLOAD ERROR:",
+            error
+        );
+
+
+        return "";
+
+    }
+
+
+
     const { data } =
-        supabaseClient.storage
-            .from("product-images")
-            .getPublicUrl(fileName);
+
+    supabaseClient
+    .storage
+    .from(bucket)
+    .getPublicUrl(
+        fileName
+    );
+
+
 
     return data.publicUrl;
+
 
 }
 
 // =====================================
-// Upload Gallery To Supabase
+// Upload Multiple Gallery Images
 // =====================================
 
-async function uploadGallery(files) {
+async function uploadGallery(files){
 
-    const galleryUrls = [];
 
-    for (const file of files) {
+    const urls = [];
 
-        const fileName =
-            Date.now() + "-" + Math.random().toString(36).substring(2) + "-" + file.name;
 
-        const { error } =
-            await supabaseClient.storage
-                .from("product-gallery")
-                .upload(fileName, file);
 
-        if (error) {
+    for(const file of files){
 
-            console.error(error);
 
-            alert("Gallery upload failed.");
+        const url =
 
-            continue;
+        await uploadFile(
+            "product-gallery",
+            file
+        );
+
+
+
+        if(url){
+
+            urls.push(url);
 
         }
 
-        const { data } =
-            supabaseClient.storage
-                .from("product-gallery")
-                .getPublicUrl(fileName);
-
-        galleryUrls.push(data.publicUrl);
 
     }
 
-    return galleryUrls;
+
+
+    return urls;
+
 
 }
 
-
-// =====================================
-// Upload Video To Supabase
-// =====================================
-
-async function uploadVideo(file) {
-
-    if (!file) return "";
-
-    const fileName =
-        Date.now() + "-" + file.name;
-
-    const { error } =
-        await supabaseClient.storage
-            .from("product-videos")
-            .upload(fileName, file);
-
-    if (error) {
-
-        console.error(error);
-
-        alert("Video upload failed.");
-
-        return "";
-
-    }
-
-    const { data } =
-        supabaseClient.storage
-            .from("product-videos")
-            .getPublicUrl(fileName);
-
-    return data.publicUrl;
-
-}
 
 
 // =====================================
 // Publish Product
 // =====================================
 
-productForm.addEventListener("submit", async function (event) {
+productForm.addEventListener(
+"submit",
+async function(event){
 
-    event.preventDefault();
 
-    const imageFile =
-        document.getElementById("product-image").files[0];
+event.preventDefault();
 
-    const galleryFiles =
-        document.getElementById("product-gallery").files;
 
-    const videoFile =
-        document.getElementById("product-video").files[0];
 
-    const image =
+const imageFile =
+
+document.getElementById(
+"product-image"
+).files[0];
+
+
+
+const galleryFiles =
+
+document.getElementById(
+"product-gallery"
+).files;
+
+
+
+const videoFile =
+
+document.getElementById(
+"product-video"
+).files[0];
+
+
+
+
+
+let image =
+currentEditingImage;
+
+
+
+let gallery =
+currentEditingGallery;
+
+
+
+let video =
+currentEditingVideo;
+
+
+
+
+// Upload Main Image
+
+if(imageFile){
+
+
+    image =
+    await uploadFile(
+        "product-images",
         imageFile
-            ? await uploadImage(imageFile)
-            : currentEditingImage;
-
-    let gallery = [];
-
-    if (galleryFiles.length > 0) {
-
-        gallery =
-            await uploadGallery(galleryFiles);
-
-    } else {
-
-        gallery =
-            currentEditingGallery;
-
-    }
-
-    const video =
-        videoFile
-            ? await uploadVideo(videoFile)
-            : currentEditingVideo;
-
-    await saveProduct(
-        image,
-        gallery,
-        video
     );
+
+
+}
+
+
+
+// Upload Gallery
+
+if(galleryFiles.length > 0){
+
+
+    gallery =
+    await uploadGallery(
+        galleryFiles
+    );
+
+
+}
+
+
+
+// Upload Video
+
+if(videoFile){
+
+
+    video =
+    await uploadFile(
+        "product-videos",
+        videoFile
+    );
+
+
+}
+
+
+
+await saveProduct(
+image,
+gallery,
+video
+);
+
+
 
 });
 
+
+
+
+
 // =====================================
-// Save Product To Supabase
+// Save Product
 // =====================================
 
-async function saveProduct(image, gallery, video) {
+async function saveProduct(
+image,
+gallery,
+video
+){
 
-    const product = {
 
-    product_name:
-        document.querySelectorAll('input[type="text"]')[0].value,
 
-    price:
-        document.querySelectorAll('input[type="text"]')[1].value,
+const product = {
 
-    affiliate_link:
-        document.querySelector('input[type="url"]').value,
 
-    main_category:
-        document.querySelectorAll("select")[0].value,
+product_code:
 
-    collection_category:
-        document.querySelectorAll("select")[1].value,
+document.getElementById(
+"product-id"
+).value,
 
-    description:
-        document.querySelector("textarea").value,
 
-    main_image: image,
 
-    gallery_images: gallery,
+product_name:
 
-    product_video: video
+document.querySelectorAll(
+'input[type="text"]'
+)[0].value,
+
+
+
+price:
+
+document.querySelectorAll(
+'input[type="text"]'
+)[1].value,
+
+
+
+affiliate_link:
+
+document.querySelector(
+'input[type="url"]'
+).value,
+
+
+
+main_category:
+
+document.querySelectorAll(
+"select"
+)[0].value,
+
+
+
+collection_category:
+
+document.querySelectorAll(
+"select"
+)[1].value,
+
+
+
+description:
+
+document.querySelector(
+"textarea"
+).value,
+
+
+
+main_image:
+
+image,
+
+
+
+gallery_images:
+
+gallery,
+
+
+
+product_video:
+
+video
+
 
 };
 
 
-    let error;
-
-    if (editingProductId === null) {
-
-        ({ error } = await supabaseClient
-            .from("products")
-            .insert(product));
-
-    } else {
-
-        ({ error } = await supabaseClient
-            .from("products")
-            .update(product)
-            .eq("id", editingProductId));
-
-    }
 
 
-    if (error) {
 
-        console.error(error);
+let response;
 
-        console.log("DATABASE ERROR:", error);
 
-        alert("Failed to save product.");
 
-        return;
+if(editingProductId){
 
-    }
 
-    alert("Product saved successfully!");
 
-    editingProductId = null;
+response =
 
-    currentEditingImage = "";
+await supabaseClient
+.from("products")
+.update(product)
+.eq(
+"id",
+editingProductId
+);
 
-    currentEditingGallery = [];
 
-    currentEditingVideo = "";
 
-    productForm.reset();
+}else{
 
-    await loadProducts();
 
-    setNextProductId();
+
+response =
+
+await supabaseClient
+.from("products")
+.insert(product);
+
+
 
 }
 
 
-// =====================================
-// Clear Form
-// =====================================
 
-function clearForm() {
 
-    productForm.reset();
 
-    editingProductId = null;
+if(response.error){
 
-    currentEditingImage = "";
 
-    currentEditingGallery = [];
+console.error(
+"SAVE ERROR:",
+response.error
+);
 
-    currentEditingVideo = "";
 
-    setNextProductId();
+
+alert(
+"Failed to save product."
+);
+
+
+
+return;
+
 
 }
 
 
-// =====================================
-// Console
-// =====================================
 
-console.log("TrendoraHub Admin Panel Loaded Successfully");
 
+
+alert(
+"Product saved successfully!"
+);
+
+
+
+editingProductId = null;
+
+
+
+currentEditingImage = "";
+
+currentEditingGallery = [];
+
+currentEditingVideo = "";
+
+
+
+productForm.reset();
+
+
+
+await loadProducts();
+
+
+
+generateProductId();
+
+
+
+}
 
 // =====================================
 // Edit Product
 // =====================================
 
-editBtn.addEventListener("click", function () {
-
-    const selected =
-        document.querySelectorAll(".product-checkbox:checked");
-
-
-    if (selected.length !== 1) {
-
-        alert("Select one product.");
-
-        return;
-
-    }
-
-
-    const id =
-        selected[0].dataset.id;
-
-
-    const product =
-        products.find(item => item.id == id);
-
-
-    if (!product) {
-
-        alert("Product not found.");
-
-        return;
-
-    }
-
-
-    editingProductId = product.id;
-
-
-    currentEditingImage =
-        product.main_image || "";
-
-
-    currentEditingGallery =
-        product.gallery_images || [];
-
-
-    currentEditingVideo =
-        product.product_video || "";
+editBtn.addEventListener(
+"click",
+function(){
 
 
 
-    document.getElementById("product-id").value =
-        product.id;
+const selected =
 
-
-    document.querySelectorAll('input[type="text"]')[0].value =
-        product.product_name;
-
-
-    document.querySelectorAll('input[type="text"]')[1].value =
-        product.price;
-
-
-    document.querySelector('input[type="url"]').value =
-        product.affiliate_link || "";
+document.querySelectorAll(
+".product-checkbox:checked"
+);
 
 
 
-    document.querySelectorAll("select")[0].value =
-        product.main_category;
+
+if(selected.length !== 1){
+
+
+alert(
+"Select one product."
+);
+
+
+return;
+
+
+}
 
 
 
-    document.querySelectorAll("select")[1].value =
-        product.collection_category;
+
+
+const id =
+
+selected[0].dataset.id;
 
 
 
-    document.querySelector("textarea").value =
-        product.description || "";
+
+
+const product =
+
+products.find(
+item => item.id == id
+);
+
+
+
+
+
+if(!product){
+
+
+alert(
+"Product not found."
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+editingProductId = product.id;
+
+
+
+currentEditingImage =
+
+product.main_image || "";
+
+
+
+currentEditingGallery =
+
+product.gallery_images || [];
+
+
+
+currentEditingVideo =
+
+product.product_video || "";
+
+
+
+
+
+
+document.getElementById(
+"product-id"
+).value =
+
+product.product_code || "";
+
+
+
+
+
+document.querySelectorAll(
+'input[type="text"]'
+)[0].value =
+
+product.product_name || "";
+
+
+
+
+
+document.querySelectorAll(
+'input[type="text"]'
+)[1].value =
+
+product.price || "";
+
+
+
+
+
+document.querySelector(
+'input[type="url"]'
+).value =
+
+product.affiliate_link || "";
+
+
+
+
+
+document.querySelectorAll(
+"select"
+)[0].value =
+
+product.main_category || "";
+
+
+
+
+
+document.querySelectorAll(
+"select"
+)[1].value =
+
+product.collection_category || "";
+
+
+
+
+
+document.querySelector(
+"textarea"
+).value =
+
+product.description || "";
+
+
+
+
+alert(
+"Product loaded for editing."
+);
+
 
 
 });
 
 
+
+
+
 // =====================================
-// Delete Product From Supabase
+// Delete Product
 // =====================================
 
-deleteBtn.addEventListener("click", async function () {
-
-
-    const selected =
-        document.querySelectorAll(".product-checkbox:checked");
-
-
-
-    if (selected.length === 0) {
-
-        alert("Select product first.");
-
-        return;
-
-    }
+deleteBtn.addEventListener(
+"click",
+async function(){
 
 
 
-    const ids = [];
+const selected =
+
+document.querySelectorAll(
+".product-checkbox:checked"
+);
 
 
-    selected.forEach(item => {
 
-        ids.push(item.dataset.id);
-        console.log("DELETE IDS:", ids);
+
+if(selected.length === 0){
+
+
+alert(
+"Select product first."
+);
+
+
+return;
+
+
+}
+
+
+
+
+const ids = [];
+
+
+
+selected.forEach(item=>{
+
+
+ids.push(
+Number(item.dataset.id)
+);
+
+
+});
+
+
+
+
+
+console.log(
+"DELETE IDS:",
+ids
+);
+
+
+
+
+
+
+const { data, error } =
+
+await supabaseClient
+.from("products")
+.delete()
+.in(
+"id",
+ids
+)
+.select();
+
+
+
+
+
+console.log(
+"DELETE RESPONSE:",
+data
+);
+
+
+
+console.log(
+"DELETE ERROR:",
+error
+);
+
+
+
+
+
+
+if(error){
+
+
+console.error(
+error
+);
+
+
+alert(
+"Delete failed."
+);
+
+
+return;
+
+
+}
+
+
+
+
+
+alert(
+"Product deleted successfully!"
+);
+
+
+
+
+
+await loadProducts();
+
+
+
+});
+
+
+
+
+
+// =====================================
+// Reset Form
+// =====================================
+
+function resetProductForm(){
+
+
+
+productForm.reset();
+
+
+
+editingProductId = null;
+
+
+
+currentEditingImage = "";
+
+currentEditingGallery = [];
+
+currentEditingVideo = "";
+
+
+
+generateProductId();
+
+
+
+}
+
+
+
+
+
+// =====================================
+// Cancel Edit
+// =====================================
+
+function cancelEdit(){
+
+
+
+resetProductForm();
+
+
+
+}
+
+// =====================================
+// Refresh Products
+// =====================================
+
+async function refreshProducts(){
+
+
+    await loadProducts();
+
+
+    generateProductId();
+
+
+}
+
+
+
+
+
+// =====================================
+// Clear Selected Checkboxes
+// =====================================
+
+function clearSelection(){
+
+
+    const checkboxes =
+
+    document.querySelectorAll(
+        ".product-checkbox"
+    );
+
+
+
+    checkboxes.forEach(box=>{
+
+
+        box.checked = false;
+
 
     });
 
 
-
-    const { data, error } =
-    await supabaseClient
-        .from("products")
-        .delete()
-        .in("id", ids)
-        .select();
-
-console.log("DELETE RESPONSE:", data);
-console.log("DELETE ERROR:", error);
-
-
-    if (error) {
-
-        console.error(error);
-
-        alert("Delete failed.");
-
-        return;
-
-    }
+}
 
 
 
-    alert("Product deleted successfully!");
 
 
-    await loadProducts();
+// =====================================
+// Safety Check Before Leaving Edit
+// =====================================
+
+window.addEventListener(
+"beforeunload",
+function(){
+
+
+    editingProductId = null;
 
 
 });
 
 
-// =====================================
-// Form Reset After Save
-// =====================================
 
-function resetProductForm() {
-
-    productForm.reset();
-
-    editingProductId = null;
-
-    currentEditingImage = "";
-
-    currentEditingGallery = [];
-
-    currentEditingVideo = "";
-
-    setNextProductId();
-
-}
 
 
 // =====================================
-// Cancel Editing When Needed
-// =====================================
-
-function cancelEdit() {
-
-    editingProductId = null;
-
-    currentEditingImage = "";
-
-    currentEditingGallery = [];
-
-    currentEditingVideo = "";
-
-    resetProductForm();
-
-}
-
-
-// =====================================
-// Refresh Products Button Safety
-// =====================================
-
-async function refreshProducts() {
-
-    await loadProducts();
-
-    setNextProductId();
-
-}
-
-
-// =====================================
-// Final Admin Panel Check
+// Final Console
 // =====================================
 
 console.log(
-    "TrendoraHub Admin Panel - Supabase Version Loaded Successfully"
+"TrendoraHub Admin Panel Supabase Final Version Loaded Successfully"
 );
