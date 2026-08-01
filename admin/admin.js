@@ -542,7 +542,7 @@ deleteBtn.addEventListener("click", async function () {
         await supabaseClient
             .from("products")
             .delete()
-            .in("id", ids);
+            .in("id", ids.map(Number));
 
 
 
