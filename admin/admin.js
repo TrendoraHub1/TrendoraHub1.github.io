@@ -315,33 +315,31 @@ async function saveProduct(image, gallery, video) {
 
     const product = {
 
-        id: document.getElementById("product-id").value,
+    product_name:
+        document.querySelectorAll('input[type="text"]')[0].value,
 
-        product_name:
-            document.querySelectorAll('input[type="text"]')[0].value,
+    price:
+        document.querySelectorAll('input[type="text"]')[1].value,
 
-        price:
-            document.querySelectorAll('input[type="text"]')[1].value,
+    affiliate_link:
+        document.querySelector('input[type="url"]').value,
 
-        affiliate_link:
-            document.querySelector('input[type="url"]').value,
+    main_category:
+        document.querySelectorAll("select")[0].value,
 
-        main_category:
-            document.querySelectorAll("select")[0].value,
+    collection_category:
+        document.querySelectorAll("select")[1].value,
 
-        collection_category:
-            document.querySelectorAll("select")[1].value,
+    description:
+        document.querySelector("textarea").value,
 
-        description:
-            document.querySelector("textarea").value,
+    main_image: image,
 
-        main_image: image,
+    gallery_images: gallery,
 
-        gallery_images: gallery,
+    product_video: video
 
-        product_video: video
-
-    };
+};
 
 
     let error;
