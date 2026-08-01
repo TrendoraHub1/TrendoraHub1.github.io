@@ -539,12 +539,15 @@ deleteBtn.addEventListener("click", async function () {
 
 
 
-    const { error } =
-        await supabaseClient
-            .from("products")
-            .delete()
-            .in("id", ids.map(Number));
+    const { data, error } =
+    await supabaseClient
+        .from("products")
+        .delete()
+        .in("id", ids)
+        .select();
 
+console.log("DELETE RESPONSE:", data);
+console.log("DELETE ERROR:", error);
 
 
     if (error) {
