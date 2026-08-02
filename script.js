@@ -10,7 +10,6 @@ function initializeWebsite() {
     setupRevealAnimation();
     setupScrollProgress();
     setupBackToTop();
-    setupNewsletter();
 }
 
 function setupSmoothScrolling() {
@@ -365,75 +364,3 @@ async function testSupabaseConnection() {
 }
 
 testSupabaseConnection();
-
-// =====================================
-// Newsletter System - Part 1
-// =====================================
-
-function setupNewsletter() {
-
-    const form = document.querySelector(".newsletter-form");
-
-    if (!form) return;
-
-    form.addEventListener("submit", subscribeEmail);
-
-}
-// =====================================
-// Newsletter System - Part 2
-// =====================================
-
-async function subscribeEmail(event) {
-
-    event.preventDefault();
-
-    const input =
-    document.querySelector(".newsletter-form input[type='email']");
-
-    if (!input) return;
-
-    const email = input.value.trim().toLowerCase();
-
-    if (email === "") {
-
-        showNotification("Please enter your email.");
-
-        return;
-
-    }
-
-    const { error } =
-    await supabaseClient
-        .from("subscribers")
-        .insert([
-            {
-                email: email
-            }
-        ]);
-
-    if (error) {
-
-        if (
-            error.message &&
-            error.message.toLowerCase().includes("duplicate")
-        ) {
-
-            showNotification("This email is already subscribed.");
-
-        } else {
-
-            console.error(error);
-
-            showNotification("Subscription failed.");
-
-        }
-
-        return;
-
-    }
-
-    showNotification("Thanks for subscribing!");
-
-    input.value = "";
-
-}
