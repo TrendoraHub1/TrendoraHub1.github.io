@@ -1,15 +1,16 @@
 "use strict";
 
-// =====================================
-// TrendoraHub Admin Panel
-// Supabase Final Version
-// Part 1
-// =====================================
+/* =====================================
+   TrendoraHub Admin Panel
+   Supabase Final Version
+   Currency Update Version
+   Part 1
+===================================== */
 
 
-// =====================================
-// Elements
-// =====================================
+/* =====================================
+   Elements
+===================================== */
 
 const productForm = document.querySelector(".product-form");
 
@@ -20,9 +21,9 @@ const deleteBtn = document.getElementById("delete-btn");
 const editBtn = document.getElementById("edit-btn");
 
 
-// =====================================
-// Variables
-// =====================================
+/* =====================================
+   Variables
+===================================== */
 
 let products = [];
 
@@ -35,20 +36,24 @@ let currentEditingGallery = [];
 let currentEditingVideo = "";
 
 
-// =====================================
-// Start Admin Panel
-// =====================================
 
-document.addEventListener("DOMContentLoaded", () => {
+/* =====================================
+   Start Admin Panel
+===================================== */
+
+document.addEventListener(
+"DOMContentLoaded",
+() => {
 
     initializeAdmin();
 
 });
 
 
-// =====================================
-// Initialize
-// =====================================
+
+/* =====================================
+   Initialize
+===================================== */
 
 async function initializeAdmin(){
 
@@ -60,17 +65,24 @@ async function initializeAdmin(){
 
 
 
-// =====================================
-// Load Products
-// =====================================
+/* =====================================
+   Load Products
+===================================== */
 
 async function loadProducts(){
 
+
     const { data, error } =
+
     await supabaseClient
     .from("products")
     .select("*")
-    .order("id", { ascending:false });
+    .order(
+        "id",
+        {
+            ascending:false
+        }
+    );
 
 
 
@@ -96,25 +108,33 @@ async function loadProducts(){
 
     renderProducts();
 
+
 }
 
 
 
-// =====================================
-// Generate Product Display ID
-// =====================================
+/* =====================================
+   Generate Product ID
+===================================== */
 
 function generateProductId(){
 
+
     let max = 0;
+
 
 
     products.forEach(product=>{
 
 
         const number = product.product_id
-? Number(product.product_id.replace("PRD",""))
-: 0;
+
+        ? Number(
+            product.product_id
+            .replace("PRD","")
+          )
+
+        : 0;
 
 
 
@@ -129,19 +149,23 @@ function generateProductId(){
 
 
 
-    const next =
-    max + 1;
+    const next = max + 1;
 
 
 
     const id =
+
     "PRD" +
-    String(next).padStart(3,"0");
+    String(next)
+    .padStart(3,"0");
 
 
 
     const input =
-    document.getElementById("product-id");
+
+    document.getElementById(
+        "product-id"
+    );
 
 
 
@@ -156,11 +180,12 @@ function generateProductId(){
 
 
 
-// =====================================
-// Render Products
-// =====================================
+/* =====================================
+   Render Products
+===================================== */
 
 function renderProducts(){
+
 
     if(!productList) return;
 
@@ -190,6 +215,7 @@ data-id="${product.id}"
 >
 
 
+
 <img
 
 src="${product.main_image || ""}"
@@ -197,6 +223,7 @@ src="${product.main_image || ""}"
 alt="product"
 
 >
+
 
 
 <h3>
@@ -208,8 +235,11 @@ ${product.product_name || ""}
 
 
 <p>
+
 Product ID:
+
 ${product.product_id || ""}
+
 </p>
 
 
@@ -217,6 +247,7 @@ ${product.product_id || ""}
 <p>
 
 Price:
+
 ${product.price || ""}
 
 </p>
@@ -226,6 +257,7 @@ ${product.price || ""}
 <p>
 
 Category:
+
 ${product.main_category || ""}
 
 </p>
@@ -250,15 +282,14 @@ ${product.description || ""}
     });
 
 
+
 }
 
+/* =====================================
+   Upload File Helper
+===================================== */
 
-
-// =====================================
-// Upload File Helper
-// =====================================
-
-async function uploadFile(bucket,file){
+async function uploadFile(bucket, file){
 
 
     if(!file){
@@ -269,12 +300,16 @@ async function uploadFile(bucket,file){
 
 
 
-   const safeName = file.name
+    const safeName = file.name
     .replace(/[^a-zA-Z0-9.]/g, "-");
 
 
-const fileName =
-    Date.now() + "-" + safeName;
+
+    const fileName =
+
+    Date.now()
+    + "-"
+    + safeName;
 
 
 
@@ -292,12 +327,10 @@ const fileName =
 
     if(error){
 
-
         console.error(
             "UPLOAD ERROR:",
             error
         );
-
 
         return "";
 
@@ -321,9 +354,11 @@ const fileName =
 
 }
 
-// =====================================
-// Upload Multiple Gallery Images
-// =====================================
+
+
+/* =====================================
+   Upload Gallery Images
+===================================== */
 
 async function uploadGallery(files){
 
@@ -362,109 +397,116 @@ async function uploadGallery(files){
 
 
 
-// =====================================
-// Publish Product
-// =====================================
+
+/* =====================================
+   Publish Product
+===================================== */
 
 productForm.addEventListener(
 "submit",
 async function(event){
 
 
-event.preventDefault();
+    event.preventDefault();
 
 
 
-const imageFile =
+    const imageFile =
 
-document.getElementById(
-"product-image"
-).files[0];
-
-
-
-const galleryFiles =
-
-document.getElementById(
-"product-gallery"
-).files;
+    document.getElementById(
+        "product-image"
+    ).files[0];
 
 
 
-const videoFile =
+    const galleryFiles =
 
-document.getElementById(
-"product-video"
-).files[0];
-
-
+    document.getElementById(
+        "product-gallery"
+    ).files;
 
 
 
-let image =
-currentEditingImage;
+    const videoFile =
 
-
-
-let gallery =
-currentEditingGallery;
-
-
-
-let video =
-currentEditingVideo;
+    document.getElementById(
+        "product-video"
+    ).files[0];
 
 
 
 
-// Upload Main Image
+    let image =
 
-if(imageFile){
+    currentEditingImage;
 
 
-    image =
-    await uploadFile(
-        "product-images",
-        imageFile
+
+    let gallery =
+
+    currentEditingGallery;
+
+
+
+    let video =
+
+    currentEditingVideo;
+
+
+
+
+    if(imageFile){
+
+
+        image =
+
+        await uploadFile(
+            "product-images",
+            imageFile
+        );
+
+
+    }
+
+
+
+
+    if(galleryFiles.length > 0){
+
+
+        gallery =
+
+        await uploadGallery(
+            galleryFiles
+        );
+
+
+    }
+
+
+
+
+    if(videoFile){
+
+
+        video =
+
+        await uploadFile(
+            "product-videos",
+            videoFile
+        );
+
+
+    }
+
+
+
+
+    await saveProduct(
+        image,
+        gallery,
+        video
     );
-
-
-}
-
-
-
-// Upload Gallery
-
-if(galleryFiles.length > 0){
-
-    gallery =
-    await uploadGallery(
-        galleryFiles
-    );
-    
-}
-
-// Upload Video
-
-if(videoFile){
-
-
-    video =
-    await uploadFile(
-        "product-videos",
-        videoFile
-    );
-
-
-}
-
-
-
-await saveProduct(
-image,
-gallery,
-video
-);
 
 
 
@@ -474,9 +516,9 @@ video
 
 
 
-// =====================================
-// Save Product
-// =====================================
+/* =====================================
+   Save Product
+===================================== */
 
 async function saveProduct(
 image,
@@ -486,49 +528,69 @@ video
 
 
 
+const selects =
+
+document.querySelectorAll(
+    "select"
+);
+
+
+
 const product = {
 
+
 product_id:
-document.getElementById("product-id").value,
+
+document.getElementById(
+    "product-id"
+).value,
+
+
 
 product_name:
-document.querySelectorAll('input[type="text"]')[0].value,
+
+document.querySelectorAll(
+    'input[type="text"]'
+)[0].value,
 
 
 
 price:
-document.getElementById("product-currency").value +
-document.getElementById("product-price").value,
+
+document.getElementById(
+    "product-currency"
+).value +
+
+document.getElementById(
+    "product-price"
+).value,
+
 
 
 affiliate_link:
 
 document.querySelector(
-'input[type="url"]'
+    'input[type="url"]'
 ).value,
 
 
 
 main_category:
 
-document.querySelectorAll(
-"select"
-)[0].value,
+selects[1].value,
 
 
 
 collection_category:
 
-document.querySelectorAll(
-"select"
-)[1].value,
+selects[2].value,
 
 
 
 description:
 
 document.querySelector(
-"textarea"
+    "textarea"
 ).value,
 
 
@@ -554,8 +616,6 @@ video
 
 
 
-
-
 let response;
 
 
@@ -563,18 +623,19 @@ let response;
 if(editingProductId !== null){
 
 
-
 response =
 
 await supabaseClient
 .from("products")
 .update(product)
-.eq("product_id", editingProductId)
+.eq(
+    "product_id",
+    editingProductId
+);
 
 
 
 }else{
-
 
 
 response =
@@ -589,30 +650,24 @@ await supabaseClient
 
 
 
-
-
 if(response.error){
 
 
 console.error(
-"SAVE ERROR:",
-response.error
+    "SAVE ERROR:",
+    response.error
 );
-
 
 
 alert(
-"Failed to save product."
+    "Failed to save product."
 );
-
 
 
 return;
 
 
 }
-
-
 
 
 
@@ -623,7 +678,6 @@ alert(
 
 
 editingProductId = null;
-
 
 
 currentEditingImage = "";
@@ -638,6 +692,12 @@ productForm.reset();
 
 
 
+document.getElementById(
+    "product-currency"
+).value = "$";
+
+
+
 await loadProducts();
 
 
@@ -648,14 +708,13 @@ generateProductId();
 
 }
 
-// =====================================
-// Edit Product
-// =====================================
+/* =====================================
+   Edit Product
+===================================== */
 
 editBtn.addEventListener(
 "click",
 function(){
-
 
 
 const selected =
@@ -663,7 +722,6 @@ const selected =
 document.querySelectorAll(
 ".product-checkbox:checked"
 );
-
 
 
 
@@ -682,13 +740,9 @@ return;
 
 
 
-
-
 const id =
 
 selected[0].dataset.id;
-
-
 
 
 
@@ -697,8 +751,6 @@ const product =
 products.find(
 item => item.id == id
 );
-
-
 
 
 
@@ -717,18 +769,15 @@ return;
 
 
 
+editingProductId =
 
-
-editingProductId = product.product_id;
+product.product_id;
 
 
 
 currentEditingImage =
 
 product.main_image || "";
-
-    document.getElementById("product-id").value =
-product.product_id;
 
 
 
@@ -743,7 +792,19 @@ currentEditingVideo =
 product.product_video || "";
 
 
-    
+
+
+document.getElementById(
+"product-id"
+).value =
+
+product.product_id;
+
+
+
+
+// Product Name
+
 document.querySelectorAll(
 'input[type="text"]'
 )[0].value =
@@ -753,18 +814,44 @@ product.product_name || "";
 
 
 
+// Currency + Price
 
-const priceInput = document.getElementById("product-price");
-const currencySelect = document.getElementById("product-currency");
+const priceInput =
 
-const price = product.price || "$0";
-
-currencySelect.value = price.charAt(0);
-priceInput.value = price.substring(1);
-
+document.getElementById(
+"product-price"
+);
 
 
 
+const currencySelect =
+
+document.getElementById(
+"product-currency"
+);
+
+
+
+const savedPrice =
+
+product.price || "$0";
+
+
+
+currencySelect.value =
+
+savedPrice.charAt(0);
+
+
+
+priceInput.value =
+
+savedPrice.substring(1);
+
+
+
+
+// Affiliate Link
 
 document.querySelector(
 'input[type="url"]'
@@ -776,32 +863,36 @@ product.affiliate_link || "";
 
 
 
+// Categories
+
+const selects =
+
 document.querySelectorAll(
 "select"
-)[0].value =
+);
+
+
+
+selects[1].value =
 
 product.main_category || "";
 
 
 
-
-
-document.querySelectorAll(
-"select"
-)[1].value =
+selects[2].value =
 
 product.collection_category || "";
 
 
 
 
+// Description
 
 document.querySelector(
 "textarea"
 ).value =
 
 product.description || "";
-
 
 
 
@@ -817,109 +908,147 @@ alert(
 
 
 
-// =====================================
-// Delete Product
-// =====================================
 
-deleteBtn.addEventListener("click", async function () {
+/* =====================================
+   Delete Product
+===================================== */
 
-    const selected =
-    document.querySelectorAll(".product-checkbox:checked");
-
-
-    if(selected.length === 0){
-
-        alert("Select product first.");
-
-        return;
-
-    }
+deleteBtn.addEventListener(
+"click",
+async function(){
 
 
-    const id =
-    selected[0].dataset.id;
+const selected =
 
-
-    console.log("Deleting ID:", id);
+document.querySelectorAll(
+".product-checkbox:checked"
+);
 
 
 
-    const { error } =
-    await supabaseClient
-    .from("products")
-    .delete()
-    .eq("id", id);
+if(selected.length === 0){
+
+
+alert(
+"Select product first."
+);
+
+
+return;
+
+
+}
 
 
 
-    if(error){
+const id =
 
-        console.error(
-            "DELETE ERROR:",
-            error
-        );
-
-        alert("Delete failed.");
-
-        return;
-
-    }
+selected[0].dataset.id;
 
 
 
-    alert(
-        "Product deleted successfully!"
-    );
+const { error } =
+
+await supabaseClient
+.from("products")
+.delete()
+.eq(
+"id",
+id
+);
 
 
-    await loadProducts();
+
+if(error){
+
+
+console.error(
+"DELETE ERROR:",
+error
+);
+
+
+
+alert(
+"Delete failed."
+);
+
+
+
+return;
+
+
+}
+
+
+
+alert(
+"Product deleted successfully!"
+);
+
+
+
+await loadProducts();
+
 
 
 });
 
-
-
-
-// =====================================
-// Reset Form
-// =====================================
+/* =====================================
+   Reset Product Form
+===================================== */
 
 function resetProductForm(){
 
+
     productForm.reset();
 
-    document.getElementById("product-currency").value = "$";
+
+    document.getElementById(
+        "product-currency"
+    ).value = "$";
+
+
 
     editingProductId = null;
 
+
     currentEditingImage = "";
+
 
     currentEditingGallery = [];
 
+
     currentEditingVideo = "";
 
+
+
     generateProductId();
+
 
 }
 
 
-// =====================================
-// Cancel Edit
-// =====================================
+
+
+/* =====================================
+   Cancel Edit
+===================================== */
 
 function cancelEdit(){
 
 
-
-resetProductForm();
-
+    resetProductForm();
 
 
 }
 
-// =====================================
-// Refresh Products
-// =====================================
+
+
+
+/* =====================================
+   Refresh Products
+===================================== */
 
 async function refreshProducts(){
 
@@ -936,9 +1065,9 @@ async function refreshProducts(){
 
 
 
-// =====================================
-// Clear Selected Checkboxes
-// =====================================
+/* =====================================
+   Clear Selection
+===================================== */
 
 function clearSelection(){
 
@@ -960,15 +1089,15 @@ function clearSelection(){
     });
 
 
+
 }
 
 
 
 
-
-// =====================================
-// Safety Check Before Leaving Edit
-// =====================================
+/* =====================================
+   Safety Before Leaving
+===================================== */
 
 window.addEventListener(
 "beforeunload",
@@ -984,9 +1113,10 @@ function(){
 
 
 
-// =====================================
-// Final Console
-// =====================================
+
+/* =====================================
+   Final Console
+===================================== */
 
 console.log(
 "TrendoraHub Admin Panel Supabase Final Version Loaded Successfully"
