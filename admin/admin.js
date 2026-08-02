@@ -441,10 +441,7 @@ if(galleryFiles.length > 0){
     await uploadGallery(
         galleryFiles
     );
-
-    console.log("Gallery Array:", gallery);
-    alert(JSON.stringify(gallery));
-
+    
 }
 
 // Upload Video
