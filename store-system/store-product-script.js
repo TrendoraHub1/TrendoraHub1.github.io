@@ -122,9 +122,9 @@ function loadGallery(product) {
 
     gallery = product.gallery_images;
 
-} else {
+} else if (typeof product.gallery_images === "string") {
 
-    gallery = [];
+    gallery = [product.gallery_images];
 
 }
 
