@@ -10,6 +10,7 @@ function initializeWebsite() {
     setupRevealAnimation();
     setupScrollProgress();
     setupBackToTop();
+    setupNewsletter();
 }
 
 function setupSmoothScrolling() {
