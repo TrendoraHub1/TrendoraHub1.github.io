@@ -500,11 +500,8 @@ document.querySelectorAll('input[type="text"]')[0].value,
 
 
 price:
-
-document.querySelectorAll(
-'input[type="text"]'
-)[1].value,
-
+document.getElementById("product-currency").value +
+document.getElementById("product-price").value,
 
 
 affiliate_link:
@@ -760,11 +757,13 @@ product.product_name || "";
 
 
 
-document.querySelectorAll(
-'input[type="text"]'
-)[1].value =
+const priceInput = document.getElementById("product-price");
+const currencySelect = document.getElementById("product-currency");
 
-product.price || "";
+const price = product.price || "$0";
+
+currencySelect.value = price.charAt(0);
+priceInput.value = price.substring(1);
 
 
 
