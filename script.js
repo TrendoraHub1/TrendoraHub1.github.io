@@ -365,3 +365,17 @@ async function testSupabaseConnection() {
 }
 
 testSupabaseConnection();
+
+// =====================================
+// Newsletter System - Part 1
+// =====================================
+
+function setupNewsletter() {
+
+    const form = document.querySelector(".newsletter-form");
+
+    if (!form) return;
+
+    form.addEventListener("submit", subscribeEmail);
+
+}
