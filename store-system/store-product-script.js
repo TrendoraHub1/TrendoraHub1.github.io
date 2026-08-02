@@ -114,7 +114,18 @@ function loadGallery(product) {
 
     if (!galleryImages.length) return;
 
-    const gallery = product.gallery_images || [];
+    let gallery = [];
+
+    if (product.gallery_images) {
+
+        try {
+            gallery = JSON.parse(product.gallery_images);
+        } catch (e) {
+            console.error("Gallery Parse Error:", e);
+            gallery = [];
+        }
+
+    }
 
     galleryImages.forEach((img, index) => {
 
@@ -133,7 +144,6 @@ function loadGallery(product) {
     });
 
 }
-
 /* ==========================================
    Product Video
 ========================================== */
