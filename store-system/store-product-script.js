@@ -118,12 +118,15 @@ function loadGallery(product) {
 
     if (product.gallery_images) {
 
-        try {
-            gallery = JSON.parse(product.gallery_images);
-        } catch (e) {
-            console.error("Gallery Parse Error:", e);
-            gallery = [];
-        }
+       if (Array.isArray(product.gallery_images)) {
+
+    gallery = product.gallery_images;
+
+} else {
+
+    gallery = [];
+
+}
 
     }
 
