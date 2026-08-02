@@ -886,32 +886,21 @@ deleteBtn.addEventListener("click", async function () {
 
 function resetProductForm(){
 
+    productForm.reset();
 
+    document.getElementById("product-currency").value = "$";
 
-productForm.reset();
+    editingProductId = null;
 
+    currentEditingImage = "";
 
+    currentEditingGallery = [];
 
-editingProductId = null;
+    currentEditingVideo = "";
 
-
-
-currentEditingImage = "";
-
-currentEditingGallery = [];
-
-currentEditingVideo = "";
-
-
-
-generateProductId();
-
-
+    generateProductId();
 
 }
-
-
-
 
 
 // =====================================
