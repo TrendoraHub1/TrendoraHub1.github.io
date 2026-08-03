@@ -264,21 +264,29 @@ nav a.active{
 
 }
 
+.product-card{
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.10);
+    transition:.35s ease;
+    display:flex;
+    flex-direction:column;
+}
+
 .product-card img{
-
     width:100%;
-
-    height:300px;
-
-    object-fit:cover;
-
-    transition:.4s ease;
-
+    aspect-ratio:1/1;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+    padding:15px;
+    background:#fff;
 }
 
 .product-card:hover img{
 
-    transform:scale(1.05);
+    transform:scale(1.02);
 
 }
 
@@ -632,14 +640,8 @@ footer p{
         padding:60px 20px;
 
     }
-
-    .product-card img{
-
-        height:250px;
-
-    }
-
-    .newsletter{
+   
+   .newsletter{
 
         padding:70px 20px;
 
