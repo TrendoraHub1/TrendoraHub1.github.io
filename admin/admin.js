@@ -703,6 +703,7 @@ item => item.product_id === editingProductId
 
 if(oldProduct){
 
+    // Delete Old Main Image
     if(image && image !== oldProduct.main_image){
 
         const oldImageName =
@@ -712,6 +713,42 @@ if(oldProduct){
         .storage
         .from("product-images")
         .remove([oldImageName]);
+
+    }
+
+    // Delete Old Gallery Images
+    if(
+        gallery.length > 0 &&
+        oldProduct.gallery_images &&
+        oldProduct.gallery_images.length > 0
+    ){
+
+        const oldGalleryFiles =
+        oldProduct.gallery_images.map(url =>
+            url.split("/").pop()
+        );
+
+        await supabaseClient
+        .storage
+        .from("product-gallery")
+        .remove(oldGalleryFiles);
+
+    }
+
+    // Delete Old Video
+    if(
+        video &&
+        video !== oldProduct.product_video &&
+        oldProduct.product_video
+    ){
+
+        const oldVideoName =
+        oldProduct.product_video.split("/").pop();
+
+        await supabaseClient
+        .storage
+        .from("product-videos")
+        .remove([oldVideoName]);
 
     }
 
