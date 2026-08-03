@@ -272,7 +272,13 @@ nav a.active{
 
     height:300px;
 
-    object-fit:cover;
+    object-fit:contain;
+
+    object-position:center;
+
+    background:#fff;
+
+    padding:15px;
 
     transition:.4s ease;
 
