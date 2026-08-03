@@ -1014,13 +1014,22 @@ return;
 
 }
 
-
-
 const id =
 
 selected[0].dataset.id;
 
+const product = products.find(item => item.id == id);
 
+if(product.main_image){
+
+const fileName = product.main_image.split("/").pop();
+
+await supabaseClient
+.storage
+.from("product-images")
+.remove([fileName]);
+
+}
 
 const { error } =
 
