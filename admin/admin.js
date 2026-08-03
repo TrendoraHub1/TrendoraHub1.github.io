@@ -697,6 +697,25 @@ let response;
 
 if(editingProductId !== null){
 
+const oldProduct = products.find(
+item => item.product_id === editingProductId
+);
+
+if(oldProduct){
+
+    if(image && image !== oldProduct.main_image){
+
+        const oldImageName =
+        oldProduct.main_image.split("/").pop();
+
+        await supabaseClient
+        .storage
+        .from("product-images")
+        .remove([oldImageName]);
+
+    }
+
+}
 
 response =
 
@@ -707,8 +726,6 @@ await supabaseClient
     "product_id",
     editingProductId
 );
-
-
 
 }else{
 
