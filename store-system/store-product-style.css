@@ -900,3 +900,30 @@ footer p{
     border-radius:50px;
 
 }
+
+html,
+body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+}
+
+header{
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+}
+
+.product-container,
+.video-container,
+.product-video-section{
+    width:100%;
+    max-width:100%;
+}
+
+#product-video{
+    display:block;
+    width:100%;
+    max-width:100%;
+    height:auto;
+}
