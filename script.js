@@ -248,11 +248,12 @@ function animateProductCards() {
 
 }
 
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     animateProductCards();
 
 });
+
 function setupActiveNavigation() {
 
     const sections = document.querySelectorAll("section[id]");
@@ -347,20 +348,3 @@ window.addEventListener("load", () => {
     setupCategoryFilter();
 
 });
-
-async function testSupabaseConnection() {
-
-    const { data, error } = await supabaseClient
-        .from("products")
-        .select("*");
-
-    if (error) {
-        console.error("Supabase Error:", error);
-    } else {
-        console.log("Supabase Connected Successfully!");
-        console.log(data);
-    }
-
-}
-
-testSupabaseConnection();
