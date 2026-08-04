@@ -410,9 +410,7 @@ transform:translateY(-4px);
 .category-card,
 .product-card,
 .about{
-opacity:0;
-transform:translateY(40px);
-transition:all .8s ease;
+transition:all .35s ease;
 }
 .show{
 opacity:1!important;
