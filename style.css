@@ -223,8 +223,8 @@ box-shadow:0 18px 40px rgba(0,0,0,.10);
 transition:.35s;
 }
 .product-card:hover{
-transform:translateY(-10px);
-box-shadow:0 30px 60px rgba(0,0,0,.18);
+    transform:translateY(-10px);
+    box-shadow:0 30px 60px rgba(0,0,0,.18);
 }
 .product-card img{
 width:100%;
@@ -348,7 +348,7 @@ box-shadow:0 15px 35px rgba(0,200,255,.35);
 }
 .category-card,
 .product-card{
-transition:all .35s ease;
+    transition:transform .35s ease,box-shadow .35s ease;
 }
 ::-webkit-scrollbar{
 width:10px;
