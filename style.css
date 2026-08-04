@@ -77,6 +77,43 @@ nav a:hover{
     color:#00c8ff;
 }
 
+.categories{
+    background:#fff;
+    text-align:center;
+}
+
+.category-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+.category-card{
+    position:relative;
+    display:block;
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.category-card img{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+}
+
+.category-card h3{
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    padding:20px;
+    margin:0;
+    color:#fff;
+    font-size:24px;
+    background:linear-gradient(transparent,rgba(0,0,0,.75));
+}
 /* ===========================
    FEATURED PRODUCTS
 =========================== */
