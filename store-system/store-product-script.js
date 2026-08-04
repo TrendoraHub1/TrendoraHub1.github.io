@@ -201,32 +201,6 @@ function loadFeatures(product) {
 
 }
 
-/* ==========================================
-   Image Error Handling
-========================================== */
-
-const mainImage = document.getElementById("main-product-image");
-
-if (mainImage) {
-
-    mainImage.addEventListener("error", () => {
-
-        mainImage.style.display = "none";
-
-    });
-
-}
-
-/* ==========================================
-   Lazy Loading
-========================================== */
-
-document.querySelectorAll("img").forEach(img => {
-
-    img.loading = "lazy";
-
-});
-
 console.log("TrendoraHub Store Product Supabase Version Loaded");
 
 /* ==========================================
