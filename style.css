@@ -154,9 +154,9 @@ background:#fff;
 text-align:center;
 }
 .category-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:30px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:30px;
 }
 .category-card{
 position:relative;
