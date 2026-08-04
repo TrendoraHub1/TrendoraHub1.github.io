@@ -410,7 +410,14 @@ transform:translateY(-4px);
 .category-card,
 .product-card,
 .about{
-transition:all .35s ease;
+opacity:0;
+transform:translateY(40px);
+transition:all .8s ease;
+}
+.category-card:hover,
+.product-card:hover{
+transform:translateY(-10px) !important;
+box-shadow:0 25px 50px rgba(0,0,0,.18);
 }
 .show{
 opacity:1!important;
