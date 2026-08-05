@@ -72,7 +72,7 @@ align-items:center;
 min-height:700px;
 padding:40px 8%;
 position:relative;
-background-image:url("assets/images/hero.png");
+background-image:url("assets/images/hero.webp");
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
@@ -504,7 +504,7 @@ padding:60px 20px;
 .hero{
 min-height:60vh;
 padding:50px 20px;
-background-image:url("assets/images/hero-mobile.png");
+background-image:url("assets/images/hero-mobile.webp");
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
