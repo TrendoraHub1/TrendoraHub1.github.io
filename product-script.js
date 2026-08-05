@@ -7,25 +7,25 @@
 const collectionHeroImages = {
 
     "smart-lifestyle.html":
-    "assets/images/product-1.png",
+    "assets/images/product-1.webp",
 
     "mens-fashion.html":
-    "assets/images/product-2.png",
+    "assets/images/product-2.webp",
 
     "womens-fashion.html":
-    "assets/images/product-3.png",
+    "assets/images/product-3.webp",
 
     "smart-home.html":
-    "assets/images/product-4.png",
+    "assets/images/product-4.webp",
 
     "beauty-lifestyle.html":
-    "assets/images/product-5.png",
+    "assets/images/product-5.webp",
 
     "travel-outdoor.html":
-    "assets/images/product-6.png",
+    "assets/images/product-6.webp",
 
     "smart-accessories.html":
-    "assets/images/product-7.png"
+    "assets/images/product-7.webp"
 
 };
 
